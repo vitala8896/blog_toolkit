@@ -7,7 +7,7 @@ import { Input } from '../UI/Input/Input'
 import { Textarea } from '../UI/Textarea/Textarea'
 import { Auxiliary } from '../../Pages/Auxiliary'
 import { createAnnouncement } from '../../store/createSlice'
-import { Creator, Header, Form } from '../../Assets/Styles/Announcements/Creator'
+import styled from 'styled-components'
 import { finishCreateAnnouncement } from '../../services/API/create'
 
 const createFormControl = () => {
@@ -111,6 +111,26 @@ const AnnouncementCreator = () => {
   )
 }
 
-
-
 export default AnnouncementCreator
+
+const Creator = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 150px;
+  width: 100%;
+  height: 100%;
+  background: #cbe2ff;
+`;
+const Header = styled.h1`
+  margin: 0;
+  font-size: 30px;
+  font-weight: bold;
+`;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  @media (max-width: 768px){    
+      width: 90%;    
+  }
+`;

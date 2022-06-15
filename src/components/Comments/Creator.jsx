@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { finishCreateComment } from './../../services/API/create'
 import { createComment } from '../../store/createSlice'
-import { Creator, NewComment, Add } from '../../Assets/Styles/Comments/Creator'
+import styled from 'styled-components'
+import TextareaAutosize from 'react-textarea-autosize'
 
 const CommentCreator = () => {
   const dispatch = useDispatch()
@@ -41,3 +42,27 @@ const CommentCreator = () => {
   )
 }
 export default CommentCreator
+
+const Creator = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const NewComment = styled(TextareaAutosize)`
+  background: #f5f1f1;
+  border-bottom: 1px solid rgb(209, 209, 209);
+  border-radius: 5px;
+  min-height: 40px;
+  padding: 0 15px;
+  flex-grow: 1;
+  margin: 0 5px;
+  resize: none
+`;
+const Add = styled.span`
+  background: #b3b3b3;
+  border-radius: 50%;
+  :hover {
+    background: #6b6b6b;
+    cursor: pointer;
+  }
+`;

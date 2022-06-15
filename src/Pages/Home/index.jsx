@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Panel from './../Dashboard/Panel'
-import Posts from './../../components/Posts/Posts'
+import { Posts } from './../../components/Posts/Posts'
 export const HomePage = () => {
     return (
       <Container>

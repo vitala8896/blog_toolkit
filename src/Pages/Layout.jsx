@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { StyleLayout, Main } from '../Assets/Styles/Other/Layout' 
+import styled from 'styled-components'
 import MenuToggle from './Dashboard/MenuToggle'
 import Drawer from './Dashboard/Drawer'
 
@@ -42,3 +42,14 @@ export const Layout = props => {
 }  
 
 export default Layout
+
+const StyleLayout = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+`;

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import person from './../../Assets/Images/person.svg'
 import CommentCreator from './Creator'
 import { finishDeleteComment } from './../../services/API/create'
-import { StyleComments, Item, Img, Avatar, Dell } from '../../Assets/Styles/Comments/Comments'
+import styled from 'styled-components'
 import { getReduxComments } from './../../services/API/post'
 import { setReduxCommentsList } from '../../store/postSlice'
 
@@ -14,11 +14,11 @@ const Comments = () => {
     comments: state.post.comments.comments,
     activePost: state.post.posts.activePost
   }))
-  // console.log(list)
   useEffect( () => {
     dispatch(getReduxComments(activePost)) 
   }, [activePost])
   useEffect(() => {
+    if (comments?.length) {
       const list = comments.map(item => {
         return {
           id: item.id,
@@ -30,6 +30,7 @@ const Comments = () => {
         }
       })
       dispatch(setReduxCommentsList(list))
+    }      
   }, [comments])  
 
   const renderActiveComments = () => { 
@@ -55,3 +56,34 @@ const Comments = () => {
   )
 }
 export default Comments
+
+const StyleComments = styled.div`
+  padding-top: 10px;
+  color: rgb(0, 0, 0);
+  width: 70%; 
+  @media (max-width: 1250px){
+    width: 95%;
+  }
+`;
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  :hover .material-icons {
+    display: block;
+  }
+`;
+const Img = styled.div`
+  min-width: 50px;  
+`;
+const Avatar = styled.img`
+  width: 40px;
+  height: auto;
+  border-radius: 50%;
+`;
+const Dell = styled.span`
+  display: none; 
+  border-radius: 50%;
+  transition: all 3.3s ease-in;
+  margin-left: 10px;  
+`;

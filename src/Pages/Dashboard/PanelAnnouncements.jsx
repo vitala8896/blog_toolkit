@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { setReduxPageNumAnnouncements } from '../../store/postSlice'
-import { StylePanel, Container, Pagination, Num } from '../../Assets/Styles/Other/Panel'
+import { StylePanel, Container, Pagination, Num } from './../Dashboard/Panel'
 
 const PanelAnnouncements = () => {
   const dispatch = useDispatch()
