@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import person from './../../Assets/Images/person.svg'
 import { Loader } from '../UI/Loader/Loader'
-import { setReduxActiveAnnouncement, fetchPostsStart, setReduxAnnouncementsList } from '../../store/postSlice'
+import { setReduxActiveAnnouncement, fetchStart, setReduxAnnouncementsList } from '../../store/postSlice'
 import { StyleAnnouncements, Container, Item, Name, Title, Body, ItemHeader, ImgAndName, StyledNavLink, Img, DateItem, H1 } from './../../Assets/Styles/Announcements/Announcements'
 import { getReduxAnnouncements } from '../../services/API/post'
 
@@ -16,6 +16,7 @@ const Announcements = () => {
     pageSize: state.post.pagination.announcements.pageSize,
   }))
   useEffect(() => {    
+    dispatch(fetchStart()) 
     dispatch(getReduxAnnouncements(pageNum, pageSize))
   }, [pageNum])  
   useEffect(() => {

@@ -2,22 +2,25 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from 'react-router-dom'
 import Comments from '../Comments/Comments'
-import { setReduxActivePost, setReduxPageNumPosts } from '../../store/postSlice'
+import { setReduxActivePost, setReduxPageNumPosts, fetchStart } from '../../store/postSlice'
 import { Active, Container, Title, Header, Body, Name, Dell, Icon, StyledNavLink } from '../../Assets/Styles/Posts/Active'
 import { getActivePost } from './../../services/API/post'
 import { finishDeletePost } from './../../services/API/create'
+import { Loader } from './../UI/Loader/Loader';
 
 const ActivePost = () => {
   const dispatch = useDispatch()
   let history = useHistory()
-  const { activePost, activePostItem, pageNum, pageSize } =
+  const { activePost, activePostItem, pageNum, pageSize, loading } =
   useSelector(state => ({
     activePost: state.post.posts.activePost,
     activePostItem: state.post.posts.activePostItem,
     pageNum: state.post.pagination.posts.pageNum,
-    pageSize: state.post.pagination.pageSize
+    pageSize: state.post.pagination.pageSize,
+    loading: state.post.loading
   }))
-  useEffect( () => {    
+  useEffect( () => {  
+    dispatch(fetchStart())  
     const setURL = () => {
       let numURL = +history.location.pathname.replace('/posts/', '')
       dispatch(setReduxActivePost(numURL))
@@ -62,7 +65,7 @@ const ActivePost = () => {
   }
   return (
     <Active>
-      {render()}
+      { loading ? <Loader /> : render()}
       <Comments />
     </Active>
   )

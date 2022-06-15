@@ -1,7 +1,7 @@
 import axios from './../axios'
 import { resetCommentCreation } from '../../store/createSlice'
 import { setReduxAnnouncements, setReduxComments, setReduxPosts, resetPostCreation, setReduxPageCountAnnouncements } from '../../store/postSlice'
-import { getReduxPosts, getReduxAnnouncements } from './post'
+import { getReduxPosts } from './post'
 import { setReduxPageCountPosts } from '../../store/postSlice'
 import { resetPostDelete, resetAnnouncementCreation } from '../../store/createSlice'
 

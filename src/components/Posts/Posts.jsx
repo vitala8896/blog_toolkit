@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import person from './../../Assets/Images/person.svg'
 import { Loader } from '../UI/Loader/Loader'
-import { setReduxPostsList, setReduxActivePost } from '../../store/postSlice'
+import { setReduxPostsList, setReduxActivePost, fetchStart } from '../../store/postSlice'
 import { List, StyleTitle, Container, Item, ItemHeader, Name, Img, DateItem, Title, Body, ImgAndName, StyledNavLink } from '../../Assets/Styles/Posts/Post'
 import { getReduxPosts } from './../../services/API/post'
 import { getUser } from './../../services/API/user'
@@ -16,7 +16,8 @@ const Posts = () => {
     pageSize: state.post.pagination.posts.pageSize,
     posts: state.post.posts.posts
   }))
-  useEffect(() => {   
+  useEffect(() => { 
+    dispatch(fetchStart())  
     dispatch(getReduxPosts(pageNum, pageSize))
   }, [pageNum])  
   

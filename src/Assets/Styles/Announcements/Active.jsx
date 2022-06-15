@@ -30,6 +30,7 @@ export const Icon = styled.span`
   color: #fff; 
   border-radius: 50%;
   padding: 8px;
+  height: 40px;
   :hover {
     background: rgb(8, 9, 63);
     transition: all .6s ease-in;

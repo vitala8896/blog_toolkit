@@ -37,7 +37,7 @@ export const postSlice = createSlice({
     avatarURL: 'https://s0.tchkcdn.com/i/1/1/80937_1802c6cf_1260804286_avatar_1940.jpg'
   },
   reducers: {
-    fetchPostsStart: state => {
+    fetchStart: state => {
       state.loading = true 
     }, 
     setReduxPosts: (state, event) => {
@@ -52,6 +52,7 @@ export const postSlice = createSlice({
     },
     setReduxCommentsList: (state, event) => {
       state.comments.list = event.payload
+      state.loading = false 
     },
     setReduxActivePost: (state, event) => {
       state.posts.activePost = event.payload
@@ -91,7 +92,7 @@ export const postSlice = createSlice({
 })
 
 export const { 
-  fetchPostsStart, 
+  fetchStart, 
   setReduxPosts, 
   setReduxPostsList, 
   setReduxAnnouncementsList, 
