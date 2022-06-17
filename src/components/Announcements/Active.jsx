@@ -88,6 +88,7 @@ const Container = styled.div`
   }
 `;
 const H1 = styled.h1`
+  font-size: 20px;
   margin-left: 10px;
 `;
 const Icon = styled.span`

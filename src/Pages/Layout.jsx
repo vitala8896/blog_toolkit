@@ -4,9 +4,10 @@ import styled from 'styled-components'
 import MenuToggle from './Dashboard/MenuToggle'
 import Drawer from './Dashboard/Drawer'
 
-export const Layout = props => {
+export const Layout = props => {  
   const [state, setState] = useState({
-    menu: false
+    menu: false, 
+    createPost: false
   })
   const { isAuthenticated } = useSelector(
     state => ({
@@ -29,6 +30,7 @@ export const Layout = props => {
         isOpen={state.menu}
         onClose={menuCloseHandler}
         isAuthenticated={isAuthenticated}
+        createPost={state.createPost}
       />
       <MenuToggle
         onToggle={toggleMenuHandler}

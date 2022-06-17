@@ -29,8 +29,7 @@ const Drawer = props => {
         </Item>
       )
     })
-  }
-  
+  }  
   const cls = ['Drawer']
   if (!props.isOpen) {
     cls.push('close')
@@ -44,18 +43,25 @@ const Drawer = props => {
       { to: '/post-creator', label: 'Create a post', exact: false },
       { to: '/announcement-creator', label: 'Create a announcement', exact: false },
       { to: '/logout', label: 'Exit', exact: false })
-  } else {
-    links.push({ to: '/auth/login', label: 'Authorization', exact: false })
+  } else { 
+    let checkAuth = () => {
+      if(localStorage.getItem('user')){
+        return 'login'
+      }else{
+        return 'register'
+      }
+    }   
+    links.push({ to: `/auth/${checkAuth()}`, label: 'Authorization', exact: false })
   }
   return (
-    <div>  
+    <>  
       <StyleDrawer className={cls.join(' ')}>
         <List>
           {renderLinks(links)}
         </List>
       </StyleDrawer>
       {props.isOpen && <Backdrop onClick={props.onClose} />}
-    </div>
+    </>
   )
 }
 
@@ -80,7 +86,7 @@ const StyleDrawer = styled.div`
 const Item = styled.div`
   padding-bottom: 10px;
   hr {
-    margin-top: 20px
+    margin-top: 20px;
   }
 `;
 const List = styled.ul`
@@ -92,6 +98,7 @@ const StyledNavLink = styled(NavLink)`
   position: relative; 
   color: #363d54;
   font-size: 24px;
+  font-weight: bold;
   text-decoration: none;
   background: #ebf0ff;
   line-height: 1;

@@ -1,7 +1,7 @@
 import axios from '../axios'
 import { authLogout } from '../../store/authSlice'
 
-export const login = async (email, password) => {
+export const loginUser = async (email, password) => {
 	try {
 		let authData = { email, password }
 		let url = '/login'

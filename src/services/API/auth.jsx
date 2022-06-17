@@ -2,9 +2,9 @@ import axios from '../axios/axios-post'
 import { authSuccess } from '../../store/authSlice'
 
 
-export const authRegister = (email, password, firstname, lastname, age, avatar) => {
+export const authRegister = (firstname, lastname, age, email, password, avatar) => {
   return async dispatch => {
-    let authData = { email, password, firstname, lastname, age, avatar }
+    let authData = { firstname, lastname, age, email, password, avatar }
     let url = '/register'
     const response = await axios.post(url, authData)
     const data = response.data

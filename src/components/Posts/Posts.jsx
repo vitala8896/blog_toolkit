@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import person from './../../Assets/Images/person.svg'
 import { Loader } from '../UI/Loader/Loader'
 import { setReduxPostsList, setReduxActivePost, fetchStart } from '../../store/postSlice'
 import { getReduxPosts } from './../../services/API/post'
 import { getUser } from './../../services/API/user'
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
+
 
 const Posts = () => {
   const dispatch = useDispatch()
@@ -17,12 +18,12 @@ const Posts = () => {
     pageSize: state.post.pagination.posts.pageSize,
     posts: state.post.posts.posts
   }))
-  useEffect(() => { 
+  useEffect( () => { 
     dispatch(fetchStart())  
     dispatch(getReduxPosts(pageNum, pageSize))
   }, [pageNum])  
   
-  useEffect(() => {    
+  useEffect(() => {        
     if (posts?.length) {
       if(localStorage.getItem('user')) {     
         getUser(JSON.parse(localStorage.getItem('user')).id)
@@ -73,11 +74,11 @@ const Posts = () => {
     })
   }
   return (
-    <div>
+    <div>     
       <List>
-        <StyleTitle>Posts</StyleTitle>
+        <StyleTitle>Posts</StyleTitle>        
         <Container>
-          {loading ? <Loader /> : renderList()}
+          {loading ? <Loader /> : renderList()}          
         </Container>
       </List>
     </div>
@@ -92,7 +93,7 @@ const List = styled.div`
   flex-wrap: wrap;
   justify-content: space-evenly;
   padding-bottom: 15px;
-  margin: 75px 0 15px;
+  margin: 75px 0 15px;  
   @media(max-width: 768px){
     flex-direction: column;  
     align-items: center
@@ -170,7 +171,8 @@ const Title = styled.div`
   font-size: 20px;  
   color: #2884F6 !important;
   line-height: 20px !important;
-  padding-bottom: 3px;
+  padding-bottom: 3pximport { Backdrop } from './../UI/Backdrop/Backdrop';
+;
 `;
 const Body = styled.div`
   height: 100%;

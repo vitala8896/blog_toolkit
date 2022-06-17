@@ -11,13 +11,12 @@ import { NavLink } from 'react-router-dom'
 const ActivePost = () => {
   const dispatch = useDispatch()
   let history = useHistory()
-  const { activePost, activePostItem, pageNum, pageSize, loading } =
+  const { activePost, activePostItem, pageNum, pageSize } =
   useSelector(state => ({
     activePost: state.post.posts.activePost,
     activePostItem: state.post.posts.activePostItem,
     pageNum: state.post.pagination.posts.pageNum,
-    pageSize: state.post.pagination.pageSize,
-    loading: state.post.loading
+    pageSize: state.post.pagination.pageSize
   }))
   useEffect( () => {   
     const setURL = () => {
@@ -82,6 +81,7 @@ const Active = styled.div`
   cursor: pointer;
 `;
 const Title = styled.h1`
+ font-size: 20px;
   display: flex;
   justify-content: space-between;
 `;

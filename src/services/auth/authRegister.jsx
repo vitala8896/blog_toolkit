@@ -1,8 +1,8 @@
 import axios from '../axios'
 
-export const register = async (email, password, firstname, lastname, age, avatar) => {
+export const registerUser = async (firstname, lastname, age, email, password, avatar) => {
 	try {
-		let authData = { email, password, firstname, lastname, age, avatar }
+		let authData = { firstname, lastname, email, password, age, avatar }
 		let url = '/register'
 		const response = await axios.post(url, authData)
 		return response.data

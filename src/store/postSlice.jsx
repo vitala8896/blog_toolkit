@@ -21,20 +21,20 @@ export const postSlice = createSlice({
       posts: {
         list: [], 
         pageNum: 1,      
-        pageCount: [1],
+        pageCount: [],
         pageSize: 20, 
       },
       announcements: {
         list: [], 
         pageNum: 1,
-        pageCount: [1],
+        pageCount: [],
         pageSize: 10,
       } 
     },
     loading: false,
     error: null,
     isFinished: false, 
-    avatarURL: 'https://s0.tchkcdn.com/i/1/1/80937_1802c6cf_1260804286_avatar_1940.jpg'
+    avatarURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9BgREGwGBtdG9th6TjSLJu4PA7FaRkqfI2A&usqp=CAU'
   },
   reducers: {
     fetchStart: state => {
