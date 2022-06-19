@@ -10,8 +10,7 @@ import EditAnnouncement from './components/Announcements/Edit'
 import Logout from './components/Logout/Logout'
 import { LoginForm } from './Pages/Auth/Login'
 import { RegisterForm } from './Pages/Auth/Register'
-import { CreatePost } from './components/Posts/Create'
-import { CreateAnnouncement } from './components/Announcements/Create'
+import { EditComment } from './components/Comments/Edit'
 
 
 const App = () => {
@@ -20,10 +19,9 @@ const App = () => {
 			<Layout>
 				<Header/>
 				<Switch>
-					<Route path="/post-creator" component={CreatePost} />
-					<Route path="/announcement-creator" component={CreateAnnouncement} />
 					<Route path="/posts/:postId/edit" component={Edit} />
 					<Route path="/announcements/:announcementId/edit" component={EditAnnouncement} />
+					<Route path="/comments/:commentId/edit" component={EditComment} />
 					<Route path='/auth/register' component={RegisterForm}/>:
 					<Route path='/auth/login' component={LoginForm}/>
 					<Route path="/posts/:postId" component={ActivePost} />

@@ -12,8 +12,7 @@ import { finishDeletePost, finishUpdatePost } from '../../services/API/create'
 const Edit = () => {
   const dispatch = useDispatch()  
   let history = useHistory()
-  const { activePostItem } =
-    useSelector(state => ({
+  const { activePostItem } = useSelector(state => ({
       activePostItem: state.post.posts.activePostItem
     }))
   const [title, setTitle] = useState(activePostItem.title)

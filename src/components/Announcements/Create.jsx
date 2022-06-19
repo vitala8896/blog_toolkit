@@ -1,11 +1,14 @@
 import * as React from "react"
 import { useHistory } from 'react-router-dom'
 import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from 'styled-components'
 import { createAnnouncement } from "../../store/createSlice"
 import TextareaAutosize from 'react-textarea-autosize'
 import { finishCreateAnnouncement } from "../../services/API/create"
+import close from "./../../Assets/Images/close.jpg"
+import { addAnnouncementShowToggle } from "../../store/postSlice"
+
 
 
 const CreateAnnouncement = () => {
@@ -13,8 +16,11 @@ const CreateAnnouncement = () => {
   let history = useHistory()
   const { register, handleSubmit, formState: { errors },
   } = useForm()
+  const { addAnnouncementShow } = useSelector(state => ({
+    addAnnouncementShow: state.post.announcements.addAnnouncementShow
+  }))
   return (
-    <StyleForm>
+    <StyleForm style={ addAnnouncementShow? {display: 'flex'}:{display: 'none'}}>
       <Form onSubmit={handleSubmit(data => {
         dispatch(createAnnouncement({
           ...data, 
@@ -23,10 +29,14 @@ const CreateAnnouncement = () => {
           updatedAt: new Date().toISOString()
         }))
         dispatch(finishCreateAnnouncement())
+        dispatch(addAnnouncementShowToggle())
         history.push('/announcements')
       })        
       }>
-        <Title>New Announcement</Title>
+        <Header>
+          <Title>New Announcement</Title>
+          <Close src={close} onClick={()=>dispatch(addAnnouncementShowToggle())}/> 
+        </Header>
         <Input type="text" {...register("title", {required: true, minLength: 2, maxLength: 30})} placeholder="Please enter title."/>
         {errors.title && "min length: 2, maxLength: 30"}
         <Textarea type="text" {...register("body", {required: true, minLength: 2})} placeholder="Please enter body."/>
@@ -40,11 +50,14 @@ const CreateAnnouncement = () => {
 export { CreateAnnouncement }
 
 const StyleForm = styled.div`
-  display: flex;
+  position: fixed;  
+  top: 0;  
+  display: none;
   align-items: center;
   justify-content: center; 
   height: 100vh;
-  background: linear-gradient(#141e30, #243b55);  
+  width: 100%;
+  background: rgba(0%, 53%, 87%, .18);   
 `
 const Form = styled.form`
   background-color: #15172b;
@@ -56,6 +69,15 @@ const Form = styled.form`
   & {
     color: red;
   }
+`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const Close = styled.img`
+  width: 25px;
+  height: 25px;
+  cursor: pointer
 `
 const Title = styled.p`
   color: #eee;

@@ -6,6 +6,7 @@ import { setReduxActiveAnnouncement, fetchStart, setReduxAnnouncementsList } fro
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { getReduxAnnouncements } from '../../services/API/post'
+import { CreateAnnouncement } from './Create'
 
 const Announcements = () => {
   const dispatch = useDispatch()
@@ -16,6 +17,7 @@ const Announcements = () => {
     pageNum: state.post.pagination.announcements.pageNum,
     pageSize: state.post.pagination.announcements.pageSize,
   }))
+  console.log(pageNum)
   useEffect(() => {    
     dispatch(fetchStart()) 
     dispatch(getReduxAnnouncements(pageNum, pageSize))
@@ -63,6 +65,7 @@ const Announcements = () => {
   return (
     <StyleAnnouncements>
       <H1>Announcements</H1>
+      <CreateAnnouncement/>
       <Container>        
         {loading ? <Loader /> : renderList()}
       </Container>

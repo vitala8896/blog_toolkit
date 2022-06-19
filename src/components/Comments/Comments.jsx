@@ -1,18 +1,21 @@
 import { useEffect } from 'react'
+import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import person from './../../Assets/Images/person.svg'
 import CommentCreator from './Creator'
-import { finishDeleteComment } from './../../services/API/create'
 import styled from 'styled-components'
 import { getReduxComments } from './../../services/API/post'
-import { setReduxCommentsList } from '../../store/postSlice'
+import { setReduxCommentsList, setToggleEditShow, setReduxActiveComment, setReduxActiveCommentItem } from '../../store/postSlice'
+
 
 const Comments = () => {
   const dispatch = useDispatch()
-  const { list, comments, activePost } = useSelector(state => ({
+  const { list, comments, activePost, activeCommentItem } = useSelector(state => ({
     list: state.post.comments.list,
     comments: state.post.comments.comments,
-    activePost: state.post.posts.activePost
+    editShow: state.post.comments.editShow,
+    activePost: state.post.posts.activePost,
+    activeCommentItem: state.post.comments.activeCommentItem
   }))
   useEffect( () => {
     dispatch(getReduxComments(activePost)) 
@@ -32,24 +35,36 @@ const Comments = () => {
       dispatch(setReduxCommentsList(list))
     }      
   }, [comments])  
-
+  const checkMyComment = id => {
+    return id === JSON.parse(localStorage.getItem('user')).id
+  }
   const renderActiveComments = () => { 
     return list.map((item, key) => {
       return (
-        <Item key={key}>
+        <StyledNavLink key={key}
+            to={checkMyComment(item.userId) ? `/comments/'${item.id}/edit` : `/posts/${activePost}`}
+        >
+        <Item 
+        onClick={()=>{ 
+          checkMyComment(item.userId) && 
+          dispatch(setToggleEditShow())
+          dispatch(setReduxActiveComment(item.id))
+          dispatch(setReduxActiveCommentItem(item))
+        }}
+        > 
           <Img>
             <Avatar src={item.user.avatar? item.user.avatar : person} alt='' />
           </Img>
           <div>
             {item.user.firstname} {item.user.lastname} - {item.body} 
-          </div>
-          {item.userId === JSON.parse(localStorage.getItem('user')).id && <Dell className="material-icons" onClick={() => { dispatch(finishDeleteComment(item.id, activePost)) }}>delete</Dell>}
+          </div>                  
         </Item>
+        </StyledNavLink>
       )
     })
   } 
   return (
-    <StyleComments>
+    <StyleComments>      
       <CommentCreator />
       {renderActiveComments()}
     </StyleComments>
@@ -86,4 +101,7 @@ const Dell = styled.span`
   border-radius: 50%;
   transition: all 3.3s ease-in;
   margin-left: 10px;  
+`;
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
 `;

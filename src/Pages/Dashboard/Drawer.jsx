@@ -1,17 +1,22 @@
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Backdrop } from '../../components/UI/Backdrop/Backdrop'
+import { addPostShowToggle, addAnnouncementShowToggle } from '../../store/postSlice'
 
 
 
 const Drawer = props => {
+  const dispatch = useDispatch()
   const { isAuthenticated } = useSelector(state => ({
 		isAuthenticated: state.auth.isAuthenticated
-  }))
-  
-  const clickHandler = () => {
+  }))  
+  const clickHandler = link => {
     props.onClose()
+    link === 'Create a post' && 
+    dispatch(addPostShowToggle())
+    link === 'Create a announcement' && 
+    dispatch(addAnnouncementShowToggle())
   }  
   const renderLinks = links => {
     return links.map((link, index) => {
@@ -21,7 +26,7 @@ const Drawer = props => {
             to={link.to}
             exact={link.exact}
             activeClassName={StyleDrawer.active}
-            onClick={clickHandler}
+            onClick={() => clickHandler(link.label)}
           >
             {link.label}
           </StyledNavLink>
@@ -40,8 +45,8 @@ const Drawer = props => {
   ]
   if (isAuthenticated) {
     links.push(
-      { to: '/post-creator', label: 'Create a post', exact: false },
-      { to: '/announcement-creator', label: 'Create a announcement', exact: false },
+      { to: '/', label: 'Create a post', exact: false },
+      { to: '/announcements', label: 'Create a announcement', exact: true },
       { to: '/logout', label: 'Exit', exact: false })
   } else { 
     let checkAuth = () => {
@@ -95,19 +100,38 @@ const List = styled.ul`
   padding: 60px 0 0;
 `;
 const StyledNavLink = styled(NavLink)`
-  position: relative; 
-  color: #363d54;
-  font-size: 24px;
-  font-weight: bold;
-  text-decoration: none;
-  background: #ebf0ff;
-  line-height: 1;
-  transition: opacity .3s;
-  cursor: pointer;
-  margin-bottom: 30px;
-  :hover {
-    color: #2884f6;
+  background-image: linear-gradient(
+    to right,
+    #54b3d6,
+    #54b3d6 50%,
+    #000 50%
+  );
+  background-size: 200% 100%;
+  background-position: -100%;
+  display: inline-block;
+  padding: 5px 0;
+  position: relative;
+  font-size: 20px;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease-in-out;
+  :before{
+    content: '';
+    background: #54b3d6;
+    display: block;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    transition: all 0.3s ease-in-out;
   };
+  :hover {
+    background-position: 0;
+  };
+  :hover::before{
+    width: 100%;
+  }
   &.active {
     opacity: .7;
   }  

@@ -7,6 +7,7 @@ import { setReduxPostsList, setReduxActivePost, fetchStart } from '../../store/p
 import { getReduxPosts } from './../../services/API/post'
 import { getUser } from './../../services/API/user'
 import styled from 'styled-components'
+import { CreatePost } from './Create'
 
 
 const Posts = () => {
@@ -76,7 +77,8 @@ const Posts = () => {
   return (
     <div>     
       <List>
-        <StyleTitle>Posts</StyleTitle>        
+        <StyleTitle>Posts</StyleTitle>
+        <CreatePost/>        
         <Container>
           {loading ? <Loader /> : renderList()}          
         </Container>

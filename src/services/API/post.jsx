@@ -21,7 +21,7 @@ export const getReduxPosts = (pageNum=1, pageSize=20) => {
     }
   }
 }
-export const getReduxAnnouncements = (pageNum, pageSize) => {  
+export const getReduxAnnouncements = (pageNum=1, pageSize=10) => {  
   return async dispatch => {
     try {
       await axios.get(`/announcements?_sort=createdAt&_order=desc&_expand=user&_page=${pageNum}`).then(response => {

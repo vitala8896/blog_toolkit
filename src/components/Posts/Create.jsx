@@ -1,20 +1,24 @@
 import * as React from "react"
 import { useHistory } from 'react-router-dom'
 import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from 'styled-components'
 import { createPost } from "../../store/createSlice"
 import { finishCreatePost } from './../../services/API/create'
 import TextareaAutosize from 'react-textarea-autosize'
-
+import { addPostShowToggle } from "../../store/postSlice"
+import close from "./../../Assets/Images/close.jpg"
 
 const CreatePost = () => {
   const dispatch = useDispatch()
   let history = useHistory()
   const { register, handleSubmit, formState: { errors },
-  } = useForm()
+  } = useForm()  
+  const { addPostShow } = useSelector(state => ({
+    addPostShow: state.post.posts.addPostShow
+  }))
   return (
-    <StyleForm>
+    <StyleForm style={ addPostShow? {display: 'flex'}:{display: 'none'}}>
       <Form onSubmit={handleSubmit(data => {
         dispatch(createPost({
           ...data, 
@@ -23,10 +27,14 @@ const CreatePost = () => {
           updatedAt: new Date().toISOString()
         }))
         dispatch(finishCreatePost())
+        dispatch(addPostShowToggle())
         history.push('/')
       })        
       }>
-        <Title>New Post</Title>
+        <Header>
+          <Title>New Post</Title>
+          <Close src={close} onClick={()=>dispatch(addPostShowToggle())}/> 
+        </Header>        
         <Input type="text" {...register("title", {required: true, minLength: 2, maxLength: 30})} placeholder="Please enter title."/>
         {errors.title && "min length: 2, maxLength: 30"}
         <Textarea type="text" {...register("body", {required: true, minLength: 2})} placeholder="Please enter body."/>
@@ -40,11 +48,14 @@ const CreatePost = () => {
 export { CreatePost }
 
 const StyleForm = styled.div`
-  display: flex;
+  position: fixed;  
+  top: 0;  
+  display: none;
   align-items: center;
   justify-content: center; 
   height: 100vh;
-  background: linear-gradient(#141e30, #243b55);  
+  width: 100%;
+  background: rgba(0%, 53%, 87%, .18);  
 `
 const Form = styled.form`
   background-color: #15172b;
@@ -57,11 +68,21 @@ const Form = styled.form`
     color: red;
   }
 `
-const Title = styled.p`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const Title = styled.div`
   color: #eee;
   font-family: sans-serif;
   font-size: 36px;
-  font-weight: 600;  
+  font-weight: 600; 
+  
+`
+const Close = styled.img`
+  width: 25px;
+  height: 25px;
+  cursor: pointer
 `
 const Input = styled.input`
   background-color: #303245;

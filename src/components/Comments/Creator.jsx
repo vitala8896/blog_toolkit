@@ -9,7 +9,7 @@ const CommentCreator = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState('')
   const { activePost } = useSelector(state => ({
-    activePost: state.post.posts.activePost
+    addPostShow: state.post.posts.addPostShow
   }))
   const onChangeHandler = e => {
     setValue(e.target.value)   

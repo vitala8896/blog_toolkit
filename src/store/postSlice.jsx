@@ -7,15 +7,20 @@ export const postSlice = createSlice({
       posts: [],
       activePost: 0,
       activePostItem: {},
+      addPostShow: false
      },
      announcements: {
       announcements: [],
       activeAnnouncement: 0,
       activeAnnouncementItem: {},
+      addAnnouncementShow: false
     },
     comments: {
+      editShow: false,
       comments: [], 
-      list: []
+      list: [],
+      activeComment: 0,
+      activeCommentItem: {}
     }, 
     pagination: {
       posts: {
@@ -46,7 +51,7 @@ export const postSlice = createSlice({
     },  
     setReduxPostsList: (state, event) => {
       state.pagination.posts.list = event.payload
-    },  
+    },       
     setReduxAnnouncementsList: (state, event) => {
       state.pagination.announcements.list = event.payload
     },
@@ -73,6 +78,18 @@ export const postSlice = createSlice({
     setReduxComments: (state, event) => {
       state.comments.comments = event.payload  
     },
+    setReduxActiveComment: (state, event) => {
+      state.comments.activeComment = event.payload
+    },
+    setReduxActiveCommentItem: (state, event) => {
+      state.comments.activeCommentItem = event.payload
+    },
+    setToggleEditShow: state => {
+      state.comments.editShow = true  
+    },
+    setToggleEditClose: state => {
+      state.comments.editShow = false  
+    },
     resetPostCreation: state => {
       state.post = {}   
     },
@@ -87,7 +104,15 @@ export const postSlice = createSlice({
     },
     setReduxPageNumAnnouncements: (state, event) => {
       state.pagination.announcements.pageNum = event.payload;   
-    }
+    },
+    addPostShowToggle: state => {
+      state.posts.addPostShow = !state.posts.addPostShow
+      state.announcements.addAnnouncementShow = false
+    },
+    addAnnouncementShowToggle: state => {
+      state.announcements.addAnnouncementShow = !state.announcements.addAnnouncementShow
+      state.posts.addPostShow = false
+    },
   },
 })
 
@@ -102,9 +127,15 @@ export const {
   setReduxAnnouncements, 
   setReduxActiveAnnouncement, setReduxActiveAnnouncementItem, 
   setReduxComments, 
+  setReduxActiveComment,
+  setReduxActiveCommentItem,
+  setToggleEditShow,
+  setToggleEditClose,
   resetPostCreation, 
   setReduxPageCountPosts, setReduxPageCountAnnouncements, setReduxPageNumPosts, 
-  setReduxPageNumAnnouncements
+  setReduxPageNumAnnouncements,
+  addPostShowToggle,
+  addAnnouncementShowToggle  
 } = postSlice.actions
 
 export default postSlice.reducer

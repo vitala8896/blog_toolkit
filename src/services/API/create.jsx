@@ -1,7 +1,7 @@
 import axios from './../axios'
 import { resetCommentCreation } from '../../store/createSlice'
 import { setReduxAnnouncements, setReduxComments, setReduxPosts, resetPostCreation, setReduxPageCountAnnouncements } from '../../store/postSlice'
-import { getReduxPosts } from './post'
+import { getReduxPosts, getReduxAnnouncements } from './post'
 import { setReduxPageCountPosts } from '../../store/postSlice'
 import { resetPostDelete, resetAnnouncementCreation } from '../../store/createSlice'
 
@@ -17,6 +17,7 @@ export const finishCreateAnnouncement = () => {
   return async (dispatch, getState) => {
     await axios.post('/announcements', getState().create.announcement)
     dispatch(resetAnnouncementCreation())
+    dispatch(getReduxAnnouncements())
   }
 }
 export const finishUpdatePost = id => {
@@ -24,7 +25,7 @@ export const finishUpdatePost = id => {
     try {
       await axios.patch(`/posts/` + id, getState().create.post)
       dispatch(resetPostCreation())
-      dispatch(getReduxPosts(1, 20))
+      dispatch(getReduxPosts())
     } catch (e) {
       console.log(e)
     }    
@@ -50,7 +51,16 @@ export const finishUpdateAnnouncement = (id, pageNum = 1, pageSize = 10) => {
     }
   }
 }
-
+export const finishUpdateComment = id => {
+  return async (dispatch, getState) => {
+    try {
+      await axios.patch(`/comments/` + id, getState().create.comment)
+      dispatch(resetCommentCreation())
+    } catch (e) {
+      console.log(e)
+    }    
+  }
+}
 export const finishCreateComment = activePost => {
   return async (dispatch, getState) => {
     await axios.post('/comments', getState().create.comment)

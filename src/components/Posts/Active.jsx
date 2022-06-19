@@ -1,22 +1,24 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from 'react-router-dom'
 import Comments from '../Comments/Comments'
-import { setReduxActivePost, setReduxPageNumPosts, fetchStart } from '../../store/postSlice'
+import { setReduxActivePost, setReduxPageNumPosts } from '../../store/postSlice'
 import { getActivePost } from './../../services/API/post'
 import { finishDeletePost } from './../../services/API/create'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import { EditComment } from '../Comments/Edit'
 
 const ActivePost = () => {
   const dispatch = useDispatch()
   let history = useHistory()
-  const { activePost, activePostItem, pageNum, pageSize } =
+  const { activePost, activePostItem, pageNum, pageSize, editCommentShow } =
   useSelector(state => ({
     activePost: state.post.posts.activePost,
     activePostItem: state.post.posts.activePostItem,
     pageNum: state.post.pagination.posts.pageNum,
-    pageSize: state.post.pagination.pageSize
+    pageSize: state.post.pagination.pageSize,
+    editCommentShow: state.post.comments.editShow
   }))
   useEffect( () => {   
     const setURL = () => {
@@ -59,10 +61,12 @@ const ActivePost = () => {
           }
         </Container>
       ) 
+      
     }    
   }
   return (
     <Active>
+      {/* {editCommentShow && <EditComment/>} */}
       {render()}
       <Comments />
     </Active>
