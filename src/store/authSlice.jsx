@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { loginUser as makeLogin } from '../services/auth/authLogin'
 import { registerUser as makeRegister } from '../services/auth/authRegister'
+import { updateUser as makeUpdate } from '../services/auth/authUpdate'
 import { setToken, getToken } from '../services/tokenService'
-import { setUser, getUser } from '../services/userService'
+import { setLocalUser, getLocalUser } from '../services/userService'
 
 export const authSlice = createSlice({
 	name: 'auth',
@@ -11,7 +12,7 @@ export const authSlice = createSlice({
 		accessToken: getToken(),
 		idLoading: false,
 		isAuthenticated: !!getToken()?.length,
-		user: getUser(),
+		user: getLocalUser(),
 	},
 	reducers: {
 		authLogout: state => {
@@ -35,8 +36,8 @@ export const authSlice = createSlice({
 			state.user = payload.user
 			state.isAuthenticated = true
 			setToken(payload.accessToken)
-			setUser(payload.user)
-			console.log('payload => ', payload)
+			setLocalUser(payload.user)
+			// console.log('payload => ', payload)
 		})
 		builder.addCase(registerUser.pending, (state) => {
 			state.idLoading = true
@@ -53,19 +54,40 @@ export const authSlice = createSlice({
 			state.user = payload.user
 			state.isAuthenticated = true
 			setToken(payload.accessToken)
-			setUser(payload.user)
+			setLocalUser(payload.user)
 			console.log('payload => ', payload)
+		})
+		builder.addCase(updateUser.pending, (state) => {
+			state.idLoading = true
+			state.errors = []
+		})
+		builder.addCase(updateUser.rejected, (state, payload) => {
+			state.idLoading = false
+			state.errors.push(payload.error.message)
+		})
+		builder.addCase(updateUser.fulfilled, (state, { payload, f }) => {
+			state.idLoading = false
+			state.errors = []
+			state.isAuthenticated = true
+			// console.log('payload => ', payload)
 		})
 	},
 })
+
+export const updateUser = createAsyncThunk('auth/update', async (data, api) => {
+	// console.log('data => ', data)
+	const { id, firstname, lastname, age, email, password, avatar } = data
+	const response = await makeUpdate(id, firstname, lastname, age, email, password, avatar)
+	return response
+})
 export const loginUser = createAsyncThunk('auth/login', async (data, api) => {
-	console.log('data => ', data)
+	// console.log('data => ', data)
 	const { email, password } = data
-	const response = await makeLogin(email, password)	
+	const response = await makeLogin(email, password)
 	return response
 })
 export const registerUser = createAsyncThunk('auth/register', async (data, api) => {
-	console.log('data => ', data)
+	// console.log('data => ', data)
 	const { firstname, lastname, age, email, password, avatar } = data
 	const response = await makeRegister(firstname, lastname, age, email, password, avatar)	
 	return response

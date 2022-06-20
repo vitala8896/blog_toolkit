@@ -3,18 +3,22 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { setReduxPageNumPosts } from '../store/postSlice'
 import logo from './../Assets/Images/blog-logo.png'
+import { EditUser } from './Auth/Edit'
+import { addUserShowToggle } from '../store/userSlice'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { avatar, accessToken } = useSelector(state => ({
+  const { avatar, accessToken, addUserShow } = useSelector(state => ({
     avatar: state.post.avatarURL,
-    accessToken: state.auth.accessToken
+    accessToken: state.auth.accessToken,
+    addUserShow: state.user.addUserShow
   }))
   const goToStartPage = () => {
     dispatch(setReduxPageNumPosts(1))
   }
   return (
     <StyleHeader>
+      {addUserShow && <EditUser/>}
       <Container>
         <StyledNavLink to='/'><Logo src={logo}  alt="logo" onClick={ goToStartPage } />
         </StyledNavLink>
@@ -25,7 +29,7 @@ const Header = () => {
           >Announcements</StyledNavLink>          
         </Menu>
         {accessToken &&
-          <StyledNavLink to='/'><Avatar src={avatar} alt="logo" onClick={goToStartPage} />
+          <StyledNavLink to='/'><Avatar src={avatar} alt="logo" onClick={() => {dispatch(addUserShowToggle())}} />
           </StyledNavLink>}
       </Container>
     </StyleHeader>

@@ -1,4 +1,4 @@
-import * as React from "react"
+// import * as React from "react"
 import { useHistory } from 'react-router-dom'
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
@@ -10,7 +10,6 @@ import close from "./../../Assets/Images/close.jpg"
 import { addAnnouncementShowToggle } from "../../store/postSlice"
 
 
-
 const CreateAnnouncement = () => {
   const dispatch = useDispatch()
   let history = useHistory()
@@ -20,7 +19,7 @@ const CreateAnnouncement = () => {
     addAnnouncementShow: state.post.announcements.addAnnouncementShow
   }))
   return (
-    <StyleForm style={ addAnnouncementShow? {display: 'flex'}:{display: 'none'}}>
+    <StyleForm className="slide-in-top" style={ addAnnouncementShow? {display: 'flex'}:{display: 'none'}}>
       <Form onSubmit={handleSubmit(data => {
         dispatch(createAnnouncement({
           ...data, 
@@ -57,7 +56,35 @@ const StyleForm = styled.div`
   justify-content: center; 
   height: 100vh;
   width: 100%;
-  background: rgba(0%, 53%, 87%, .18);   
+  background: rgba(0%, 53%, 87%, .18);
+  &.slide-in-top {
+    -webkit-animation: slide-in-top 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: slide-in-top 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }   
+  @-webkit-keyframes slide-in-top {
+    0% {
+      -webkit-transform: translateY(-1000px);
+              transform: translateY(-1000px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slide-in-top {
+    0% {
+      -webkit-transform: translateY(-1000px);
+              transform: translateY(-1000px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+    }
+  }   
 `
 const Form = styled.form`
   background-color: #15172b;

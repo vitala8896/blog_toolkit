@@ -10,4 +10,3 @@ export const registerUser = async (firstname, lastname, age, email, password, av
 		throw error.response.data
 	}
 }
-
