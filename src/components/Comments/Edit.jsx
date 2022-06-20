@@ -44,7 +44,7 @@ const EditComment = () => {
       <Form onSubmit={handleSubmit(data => {
         getItem(data.comment)
         dispatch(finishUpdateComment(activeComment))
-        history.push('/posts/'+ activePost)
+        history.push(`/posts/${activePost}`)
       })        
       }>
         <Title>Edit comment</Title>

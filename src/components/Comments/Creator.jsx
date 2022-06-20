@@ -9,13 +9,14 @@ const CommentCreator = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState('')
   const { activePost } = useSelector(state => ({
-    addPostShow: state.post.posts.addPostShow
+    activePost: state.post.posts.activePost
   }))
   const onChangeHandler = e => {
     setValue(e.target.value)   
     const item = {
       postId: activePost,
-      body: e.target.value,  
+      body: e.target.value, 
+      postId: activePost, 
       userId:JSON.parse(localStorage.getItem('user')).id,          
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()

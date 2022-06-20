@@ -32,7 +32,11 @@ const ActiveAnnouncement = () => {
     return history.push('/announcements')
   }
   const isAuth = () => {
-    return activeAnnouncementItem.userId === JSON.parse(localStorage.getItem('user')).id
+    if(localStorage.getItem('user')){
+      return activeAnnouncementItem.userId === JSON.parse(localStorage.getItem('user')).id
+    }else{
+      return false
+    }    
   }  
   const render = () => {
     if (activeAnnouncementItem.id) {

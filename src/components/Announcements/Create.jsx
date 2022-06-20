@@ -92,7 +92,7 @@ const Form = styled.form`
   box-sizing: border-box;
   height: auto;
   padding: 20px;
-  width: 70%;
+  max-width: 80%;
   & {
     color: red;
   }

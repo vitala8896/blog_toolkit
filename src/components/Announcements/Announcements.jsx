@@ -17,7 +17,6 @@ const Announcements = () => {
     pageNum: state.post.pagination.announcements.pageNum,
     pageSize: state.post.pagination.announcements.pageSize,
   }))
-  console.log(pageNum)
   useEffect(() => {    
     dispatch(fetchStart()) 
     dispatch(getReduxAnnouncements(pageNum, pageSize))
@@ -80,7 +79,7 @@ const StyleAnnouncements = styled.div`
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin-top: 75px;
+  margin-top: 95px;
 `;
 const Container = styled.div`
   display: flex;

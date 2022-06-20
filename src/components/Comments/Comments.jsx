@@ -36,7 +36,11 @@ const Comments = () => {
     }      
   }, [comments])  
   const checkMyComment = id => {
-    return id === JSON.parse(localStorage.getItem('user')).id
+    if(localStorage.getItem('user')){
+      return id === JSON.parse(localStorage.getItem('user')).id
+    }else{
+      return false
+    }     
   }
   const renderActiveComments = () => { 
     return list.map((item, key) => {

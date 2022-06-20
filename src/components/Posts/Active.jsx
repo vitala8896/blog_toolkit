@@ -36,7 +36,11 @@ const ActivePost = () => {
     return history.push('/')
   }
   const isAuth = () => {
-    return activePostItem.user.id === JSON.parse(localStorage.getItem('user')).id
+    if(localStorage.getItem('user')){
+      return activePostItem.user.id === JSON.parse(localStorage.getItem('user')).id
+    }else{
+      return false
+    }
   }  
   const render = () => {
     if (activePostItem.id) {

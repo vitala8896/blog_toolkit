@@ -95,7 +95,7 @@ const List = styled.div`
   flex-wrap: wrap;
   justify-content: space-evenly;
   padding-bottom: 15px;
-  margin: 75px 0 15px;  
+  margin: 95px 0 15px;  
   @media(max-width: 768px){
     flex-direction: column;  
     align-items: center
