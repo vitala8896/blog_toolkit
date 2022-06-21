@@ -2,23 +2,26 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from 'react-router-dom'
 import Comments from '../Comments/Comments'
-import { setReduxActivePost, setReduxPageNumPosts } from '../../store/postSlice'
+import { setReduxActivePost, setReduxPageNumPosts, addEditPostShowToggle } from '../../store/postSlice'
 import { getActivePost } from './../../services/API/post'
 import { finishDeletePost } from './../../services/API/create'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { EditComment } from '../Comments/Edit'
+import { Edit } from './Edit'
 
 const ActivePost = () => {
   const dispatch = useDispatch()
   let history = useHistory()
-  const { activePost, activePostItem, pageNum, pageSize, addCommentShow } =
+  const { activePost, activePostItem, pageNum, pageSize, createPost, addCommentShow, addEditShow } =
   useSelector(state => ({
     activePost: state.post.posts.activePost,
     activePostItem: state.post.posts.activePostItem,
     pageNum: state.post.pagination.posts.pageNum,
     pageSize: state.post.pagination.pageSize,
-    addCommentShow: state.post.comments.addCommentShow
+    createPost: state.create.post,
+    addCommentShow: state.post.comments.addCommentShow,
+    addEditShow: state.post.posts.addEditShow
   }))
   useEffect( () => {   
     const setURL = () => {
@@ -28,13 +31,8 @@ const ActivePost = () => {
     } 
     let thisURL = activePost === 0? setURL() : activePost   
     dispatch(getActivePost(thisURL))
-  }, [])
+  }, [createPost])
   
-  const dellPost = () => {    
-    dispatch(finishDeletePost(activePost, pageNum, pageSize))
-    dispatch(setReduxPageNumPosts(1))
-    return history.push('/')
-  }
   const isAuth = () => {
     if(localStorage.getItem('user')){
       return activePostItem.user.id === JSON.parse(localStorage.getItem('user')).id
@@ -53,16 +51,13 @@ const ActivePost = () => {
               <Name> {activePostItem.user.firstname} {activePostItem.user.lastname}</Name>
             </StyledNavLink>
             {isAuth() &&
-              <Icon className="material-icons" onClick={() => { history.push(`/posts/${activePost}/edit`) }}>edit</Icon>
+              <Icon className="material-icons" onClick={() => {
+              dispatch(addEditPostShowToggle())
+              history.push(`/posts/${activePost}`) }}>edit</Icon>
             }
           </Header>
           <Title>{activePostItem.title}</Title>
           <Body>{activePostItem.body}</Body>
-          {isAuth() &&
-            <Dell>
-              <Icon className={"material-icons"} onClick={() => dellPost()}>delete</Icon>
-            </Dell>
-          }
         </Container>
       ) 
       
@@ -71,6 +66,7 @@ const ActivePost = () => {
   return (
     <Active>
       {addCommentShow && <EditComment/>}
+      {addEditShow && <Edit/>}
       {render()}
       <Comments />
     </Active>

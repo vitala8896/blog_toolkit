@@ -7,13 +7,15 @@ export const postSlice = createSlice({
       posts: [],
       activePost: 0,
       activePostItem: {},
-      addPostShow: false
+      addPostShow: false,
+      addEditShow: false,
      },
      announcements: {
       announcements: [],
       activeAnnouncement: 0,
       activeAnnouncementItem: {},
-      addAnnouncementShow: false
+      addAnnouncementShow: false,
+      addEditShow: false,
     },
     comments: {      
       comments: [], 
@@ -109,16 +111,31 @@ export const postSlice = createSlice({
       state.posts.addPostShow = !state.posts.addPostShow
       state.announcements.addAnnouncementShow = false
       state.comments.addCommentShow = false
+      state.posts.addEditShow = false
     },
     addAnnouncementShowToggle: state => {
       state.announcements.addAnnouncementShow = !state.announcements.addAnnouncementShow
       state.posts.addPostShow = false
       state.comments.addCommentShow = false
+      state.posts.addEditShow = false
     },
     addCommentShowToggle: state => {
       state.comments.addCommentShow = !state.comments.addCommentShow
       state.posts.addPostShow = false
       state.announcements.addAnnouncementShow = false
+      state.posts.addEditShow = false
+    },
+    addEditPostShowToggle: state => {
+      state.posts.addEditShow = !state.posts.addEditShow
+      state.posts.addPostShow = false
+      state.announcements.addAnnouncementShow = false
+      state.comments.addCommentShow = false
+    },
+    addEditAnnouncementShowToggle: state => {
+      state.announcements.addEditShow = !state.announcements.addEditShow
+      state.posts.addPostShow = false
+      state.announcements.addAnnouncementShow = false
+      state.comments.addCommentShow = false
     },
   },
 })
@@ -143,7 +160,9 @@ export const {
   setReduxPageNumAnnouncements,
   addPostShowToggle,
   addAnnouncementShowToggle,
-  addCommentShowToggle  
+  addCommentShowToggle,
+  addEditPostShowToggle,
+  addEditAnnouncementShowToggle  
 } = postSlice.actions
 
 export default postSlice.reducer

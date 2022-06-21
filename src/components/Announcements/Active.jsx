@@ -1,20 +1,23 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { setReduxActiveAnnouncement } from '../../store/postSlice'
+import { setReduxActiveAnnouncement, addEditAnnouncementShowToggle } from '../../store/postSlice'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { getActiveAnnouncement } from './../../services/API/post'
 import { finishDeleteAnnouncement } from './../../services/API/create'
+import { EditAnnouncement } from './Edit'
 
 const ActiveAnnouncement = () => {
   const dispatch = useDispatch()
   let history = useHistory()
 
-  const { activeAnnouncement, activeAnnouncementItem } =
+  const { activeAnnouncement, activeAnnouncementItem, addEditShow, createAnnouncement } =
   useSelector( state => ({
     activeAnnouncement: state.post.announcements.activeAnnouncement,
-    activeAnnouncementItem: state.post.announcements.activeAnnouncementItem
+    activeAnnouncementItem: state.post.announcements.activeAnnouncementItem,
+    addEditShow: state.post.announcements.addEditShow,
+    createAnnouncement: state.create.announcement,
   }))
 
   useEffect( () => {    
@@ -25,7 +28,7 @@ const ActiveAnnouncement = () => {
     } 
     let thisURL = activeAnnouncement === 0? setURL() : activeAnnouncement  
     dispatch(getActiveAnnouncement(thisURL))
-  }, [])  
+  }, [createAnnouncement])  
 
   const dellAnnouncement = () => {    
     dispatch(finishDeleteAnnouncement(activeAnnouncement))
@@ -48,22 +51,20 @@ const ActiveAnnouncement = () => {
               {activeAnnouncementItem.user.firstname} {activeAnnouncementItem.user.lastname}</Name>
             </StyledNavLink>
             {isAuth() &&
-              <Icon className="material-icons" onClick={() => { history.push(`/announcements/${activeAnnouncement}/edit`) }}>edit</Icon>
+              <Icon className="material-icons" onClick={() => {
+                dispatch(addEditAnnouncementShowToggle())
+                history.push(`/announcements/${activeAnnouncement}`) }}>edit</Icon>
             }
           </Header>
           <H1>{activeAnnouncementItem.title}</H1>
           <Body>{activeAnnouncementItem.body}</Body>
-          {isAuth() &&
-            <Dell>
-              <Icon className={"material-icons"} onClick={() => dellAnnouncement()}>delete</Icon>
-            </Dell>
-          }
         </Container>
       ) 
     }    
   }
   return (
     <Active>
+      {addEditShow && <EditAnnouncement/>}
       {render()}
     </Active>
   )

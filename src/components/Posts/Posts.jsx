@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import person from './../../Assets/Images/person.svg'
 import { Loader } from '../UI/Loader/Loader'
-import { setReduxPostsList, setReduxActivePost, fetchStart } from '../../store/postSlice'
+import { setReduxPostsList, setReduxActivePost, fetchStart, addEditPostShowToggle } from '../../store/postSlice'
 import { getReduxPosts } from './../../services/API/post'
 import { getUser } from './../../services/API/user'
 import styled from 'styled-components'
@@ -51,7 +51,7 @@ const Posts = () => {
           <StyledNavLink
             to={'/posts/' + item.id}
             onClick={() => {
-              dispatch(setReduxActivePost(item.id));
+              dispatch(setReduxActivePost(item.id))
             }}            
           >
             <ItemHeader>

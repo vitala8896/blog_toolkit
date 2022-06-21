@@ -24,7 +24,7 @@ export const finishUpdatePost = id => {
   return async (dispatch, getState) => {
     try {
       await axios.patch(`/posts/` + id, getState().create.post)
-      dispatch(resetPostCreation())
+      dispatch(resetPostDelete())
       dispatch(getReduxPosts())
     } catch (e) {
       console.log(e)

@@ -1,132 +1,187 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { createAnnouncement } from '../../store/createSlice'
+import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from "react-redux"
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
+import { createAnnouncement } from "../../store/createSlice"
 import TextareaAutosize from 'react-textarea-autosize'
-import { finishDeleteAnnouncement, finishUpdateAnnouncement } from '../../services/API/create'
+import { addEditAnnouncementShowToggle } from "../../store/postSlice"
+import close from "./../../Assets/Images/close.jpg"
+import { finishUpdateAnnouncement, finishDeleteAnnouncement } from './../../services/API/create'
 
 const EditAnnouncement = () => {
   const dispatch = useDispatch()
   let history = useHistory()
-  const { activeAnnouncementItem } =
-    useSelector(state => ({
-      activeAnnouncementItem: state.post.announcements.activeAnnouncementItem
-    }))
-    const [title, setTitle] = useState(activeAnnouncementItem.title)
-    const [body, setBody] = useState(activeAnnouncementItem.body)  
-
-    const dellAnnouncement = () => {
-      dispatch(finishDeleteAnnouncement(activeAnnouncementItem.id))
-      return history.push('/announcements')
+  const { activeAnnouncementItem, addEditShow } = useSelector(state => ({
+    activeAnnouncementItem: state.post.announcements.activeAnnouncementItem,
+    addEditShow: state.post.announcements.addEditShow
+  }))
+  const { register, handleSubmit, formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: activeAnnouncementItem.title,
+      body: activeAnnouncementItem.body    
     }
-    const isAuth = () => {
-      return activeAnnouncementItem.userId === JSON.parse(localStorage.getItem('user')).id
-    }
-    const titleHandle = e => {
-      let val = e.target.value
-      setTitle(val)
-    }
-    const bodyHandle = e => {
-      let val = e.target.value
-      setBody(val)
-    }
-    const getItem = () => {
-      let announcementItem = {
-        title, body,
-        userId: JSON.parse(localStorage.getItem('user')).id,
-        createdAt: activeAnnouncementItem.createdAt,
-        updatedAt: new Date().toISOString()
-      }
-      dispatch(createAnnouncement(announcementItem))
-    }
-    return (
-      <EditAnnouncements>
-        <Container>
-          <Header>
-            <StyledNavLink to={'/announcements'}>
-              <Name>{activeAnnouncementItem.user.firstname} {activeAnnouncementItem.user.lastname}</Name>
-            </StyledNavLink>            
-            {isAuth() &&
-              <Icon className="material-icons" onClick={() => {
-              getItem()
-              dispatch(finishUpdateAnnouncement(activeAnnouncementItem.id))
-              history.push('/announcements')
-              }}>done_all</Icon>
-            }
-          </Header>
-          <h1><Title value={title} onChange={e => { titleHandle(e) }}/></h1>
-          <Body value={body} onChange={e => { bodyHandle(e) }}/>
-          {isAuth() &&
-            <Dell>
-              <Icon className={"material-icons"} onClick={() => dellAnnouncement()}>delete</Icon>
-            </Dell>
-          }
-        </Container>
-      </EditAnnouncements>
-    )
-}
-export default EditAnnouncement
-
-const EditAnnouncements = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 90px 0 50px;
-  width: 100%;
-  height: auto;
-  color: #fff; 
-  cursor: pointer;
-`;
-const Container = styled.div`
-  width: 70%;
-  height: auto;
-  border: 1px solid rgb(129, 129, 129);
-  border-radius: 5px;
-  background: linear-gradient(90deg, #5041b2 0%, #7969e6 100%);
-  padding: 20px; 
-  @media (max-width: 1250px){
-    width: 95%
+  })      
+  const [title, setTitle] = useState(activeAnnouncementItem.title)
+  const [body, setBody] = useState(activeAnnouncementItem.body)
+  const titleHandle = e => {
+    let val = e.target.value
+    setTitle(val)
   }
-`;
+  const bodyHandle = e => {
+    let val = e.target.value
+    setBody(val)
+  }
+  return (
+    <StyleForm className="slide-in-top" style={ addEditShow? {display: 'flex'}:{display: 'none'}}>
+      <Form onSubmit={handleSubmit(data => {
+        dispatch(createAnnouncement({
+          ...data, 
+          userId: JSON.parse(localStorage.getItem('user')).id, 
+          createdAt: new Date().toISOString(), 
+          updatedAt: new Date().toISOString()
+        }))
+        dispatch(finishUpdateAnnouncement(activeAnnouncementItem.id))
+        dispatch(addEditAnnouncementShowToggle())
+        history.push(`/announcements/${activeAnnouncementItem.id}`)
+      })        
+      }>
+        <Header>
+          <Title>Edit Announcement</Title>
+          <Close src={close} onClick={()=>dispatch(addEditAnnouncementShowToggle())}/> 
+        </Header>        
+        <Input value={title} type="text" {...register("title", {required: true, minLength: 2, maxLength: 30})} placeholder="Please enter title." onChange={e => { titleHandle(e) }}/>
+        {errors.title && "min length: 2, maxLength: 30"}
+        <Textarea value={body} type="text" {...register("body", {required: true, minLength: 2})} placeholder="Please enter body." onChange={e => { bodyHandle(e) }}/>
+        {errors.body && "min length: 2"}
+        <Btns>
+          <Button type="submit">Edit</Button>
+          <Button type="button"
+          onClick={() => {
+            dispatch(finishDeleteAnnouncement(activeAnnouncementItem.id))
+            dispatch(addEditAnnouncementShowToggle())
+            history.push('/announcements')
+          }} 
+          >Delete</Button> 
+        </Btns>       
+      </Form>
+    </StyleForm>
+  )
+}
+
+export { EditAnnouncement }
+
+const StyleForm = styled.div`
+  position: fixed;  
+  top: 0;  
+  display: none;
+  align-items: center;
+  justify-content: center; 
+  height: 100vh;
+  width: 100%;
+  background: rgba(0%, 53%, 87%, .18);  
+  &.slide-in-top {
+    -webkit-animation: slide-in-top 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: slide-in-top 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }   
+  @-webkit-keyframes slide-in-top {
+    0% {
+      -webkit-transform: translateY(-1000px);
+              transform: translateY(-1000px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slide-in-top {
+    0% {
+      -webkit-transform: translateY(-1000px);
+              transform: translateY(-1000px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+    }
+  }
+`
+const Form = styled.form`
+  background-color: #15172b;
+  border-radius: 20px;
+  box-sizing: border-box;
+  height: auto;
+  padding: 20px;
+  max-width: 100%;
+  & {
+    color: red;
+  }
+`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-`;
-const Name = styled.p`
-  color: white;
-  :hover {
-    color: rgb(167, 167, 167);
+`
+const Title = styled.div`
+  color: #eee;
+  font-family: sans-serif;
+  font-size: 36px;
+  font-weight: 600; 
+  
+`
+const Close = styled.img`
+  width: 25px;
+  height: 25px;
+  cursor: pointer
+`
+const Input = styled.input`
+  background-color: #303245;
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: #eee;
+  font-size: 18px;
+  height: 50px;
+  outline: 0;
+  padding: 0 20px 0;
+  margin-bottom: 10px;
+  width: 100%;  
+`
+const Textarea = styled(TextareaAutosize)`
+  background-color: #303245;
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: #eee;
+  font-size: 18px;
+  min-height: 50px;
+  max-height: 500px;
+  outline: 0;
+  padding: 10px 20px 0;
+  margin-bottom: 10px;
+  width: 100%;  
+  resize: none;
+`
+const Button = styled.button`
+  background-color: #08d;
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: #eee;
+  cursor: pointer;
+  font-size: 18px;
+  height: 50px;
+  margin-top: 10px;
+  text-align: center;
+  width: 49%;
+  :active {
+    background-color: #06b;
   }
-`;
-const Title = styled.input`
-  background: #7969e6;
-  width: 100%;
-  padding: 0 15px;
-  padding: 10px 15px;
-  margin-bottom: 15px;
-`;
-const Body = styled(TextareaAutosize)`
-  margin: 0;
-  background: #7969e6;
-  width: 100%;
-  padding: 10px 15px;
-  resize: none
-`;
-const Icon = styled.span`
-  color: #fff; 
-  border-radius: 50%;
-  padding: 8px;
-  :hover {
-    background: rgb(8, 9, 63);
-    transition: all .6s ease-in;
-  }
-`;
-const Dell = styled.span`
+`
+const Btns = styled.div`
   display: flex;
-  justify-content: flex-end;  
-`;
-const StyledNavLink = styled(NavLink)`
-  text-decoration: none;
-`;
+  justify-content: space-between;  
+`
