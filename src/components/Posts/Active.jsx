@@ -12,13 +12,13 @@ import { EditComment } from '../Comments/Edit'
 const ActivePost = () => {
   const dispatch = useDispatch()
   let history = useHistory()
-  const { activePost, activePostItem, pageNum, pageSize, editCommentShow } =
+  const { activePost, activePostItem, pageNum, pageSize, addCommentShow } =
   useSelector(state => ({
     activePost: state.post.posts.activePost,
     activePostItem: state.post.posts.activePostItem,
     pageNum: state.post.pagination.posts.pageNum,
     pageSize: state.post.pagination.pageSize,
-    editCommentShow: state.post.comments.editShow
+    addCommentShow: state.post.comments.addCommentShow
   }))
   useEffect( () => {   
     const setURL = () => {
@@ -70,7 +70,7 @@ const ActivePost = () => {
   }
   return (
     <Active>
-      {/* {editCommentShow && <EditComment/>} */}
+      {addCommentShow && <EditComment/>}
       {render()}
       <Comments />
     </Active>

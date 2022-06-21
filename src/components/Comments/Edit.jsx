@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useForm } from "react-hook-form"
@@ -8,6 +7,9 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { finishDeleteComment } from '../../services/API/create'
 import { createComment } from '../../store/createSlice'
 import { finishUpdateComment } from './../../services/API/create'
+import { getReduxComments } from './../../services/API/post'
+import close from "./../../Assets/Images/close.jpg"
+import { addCommentShowToggle } from "./../../store/postSlice"
 
 
 
@@ -17,12 +19,10 @@ const EditComment = () => {
   
   const { register, handleSubmit, formState: { errors },
   } = useForm()  
-  const { activePost, comments, activeComment, activeCommentItem, create } = useSelector(state => ({
-    activePost: state.post.posts.activePost,
-    comments: state.post.comments.comments,    
+  const { activePost, activeComment, activeCommentItem } = useSelector(state => ({
+    activePost: state.post.posts.activePost,    
     activeComment: state.post.comments.activeComment,
-    activeCommentItem: state.post.comments.activeCommentItem,
-    create: state.create.comment
+    activeCommentItem: state.post.comments.activeCommentItem
   }))
   const [thisComment, setComment] = useState(activeCommentItem.body)
   const setCommentHandler = e => {
@@ -41,22 +41,27 @@ const EditComment = () => {
   }
   return (
       <StyleForm>
-      <Form onSubmit={handleSubmit(data => {
+      <Form onSubmit={handleSubmit(async data => {
         getItem(data.comment)
-        dispatch(finishUpdateComment(activeComment))
+        await dispatch(addCommentShowToggle())
+        await dispatch(finishUpdateComment(activeComment))
+        await dispatch(getReduxComments(activePost))        
         history.push(`/posts/${activePost}`)
       })        
       }>
-        <Title>Edit comment</Title>
+        <Header>
+          <Title>Edit comment</Title>
+          <Close src={close} onClick={()=>dispatch(addCommentShowToggle())}/> 
+        </Header>
         <Textarea type="text" value={thisComment} {...register("comment")} placeholder="Please enter your comment." onChange={ e=>{setCommentHandler(e)}}/>
         {errors.comment && "min length: 2"}  
         <Btns>
           <Button type="submit">Edit</Button>
           <Button type="button"
           onClick={() => {
-            dispatch(
-              finishDeleteComment(activeComment, activePost))
-              history.push('/posts/'+ activePost)
+            dispatch( finishDeleteComment(activeComment, activePost))
+            dispatch(addCommentShowToggle())
+              history.push(`/posts/${activePost}`)
           }} 
           >Delete</Button> 
         </Btns>       
@@ -68,27 +73,34 @@ const EditComment = () => {
 export { EditComment }
 
 const StyleForm = styled.div`
-  // position: fixed;
+  position: fixed;
   top: 0;
   display: flex;
   align-items: center;
   justify-content: center; 
   width: 100%;
   height: 100vh;
-  background: linear-gradient(#141e30, #243b55); 
+  background: rgba(0%, 53%, 87%, .18);
 `
 const Form = styled.form`
   background-color: #15172b;
   border-radius: 20px;
   box-sizing: border-box;
   height: auto;
-  width: 70%;
+  width: 50%;
   padding: 20px;
-  width: 70%;
-  // z-index: 1;
   & {
     color: red;
   }
+`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const Close = styled.img`
+  width: 25px;
+  height: 25px;
+  cursor: pointer
 `
 const Title = styled.p`
   color: #eee;

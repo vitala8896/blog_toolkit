@@ -10,7 +10,6 @@ import EditAnnouncement from './components/Announcements/Edit'
 import Logout from './components/Logout/Logout'
 import { LoginForm } from './Pages/Auth/Login'
 import { RegisterForm } from './Pages/Auth/Register'
-import { EditComment } from './components/Comments/Edit'
 
 
 const App = () => {
@@ -21,7 +20,7 @@ const App = () => {
 				<Switch>
 					<Route path="/posts/:postId/edit" component={Edit} />
 					<Route path="/announcements/:announcementId/edit" component={EditAnnouncement} />
-					<Route path="/comments/:commentId/edit" component={EditComment} />
+					{/* <Route path="/comments/:commentId/edit" component={EditComment} /> */}
 					<Route path='/auth/register' component={RegisterForm}/>:
 					<Route path='/auth/login' component={LoginForm}/>
 					<Route path="/posts/:postId" component={ActivePost} />

@@ -88,7 +88,7 @@ export const finishDeletePost = (id, pageNum = 1, pageSize = 20) => {
 }
 export const finishDeleteAnnouncement = (id, pageNum = 1, pageSize = 10) => {
   return async dispatch => {
-    await axios.delete('/announcements/' + id)
+    await axios.delete(`/announcements/${id}`)
     await axios.get(`/announcements?_sort=createdAt&_order=desc&_expand=user&_page=${pageNum}&_limit=${pageSize}`)
     .then((response) => {
       dispatch(setReduxAnnouncements(response.data))

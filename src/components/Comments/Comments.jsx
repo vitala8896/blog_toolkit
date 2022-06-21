@@ -5,7 +5,7 @@ import person from './../../Assets/Images/person.svg'
 import CommentCreator from './Creator'
 import styled from 'styled-components'
 import { getReduxComments } from './../../services/API/post'
-import { setReduxCommentsList, setToggleEditShow, setReduxActiveComment, setReduxActiveCommentItem } from '../../store/postSlice'
+import { setReduxCommentsList, setToggleEditShow, setReduxActiveComment, setReduxActiveCommentItem, addCommentShowToggle } from '../../store/postSlice'
 
 
 const Comments = () => {
@@ -46,12 +46,12 @@ const Comments = () => {
     return list.map((item, key) => {
       return (
         <StyledNavLink key={key}
-            to={checkMyComment(item.userId) ? `/comments/'${item.id}/edit` : `/posts/${activePost}`}
+            to={checkMyComment(item.userId) ? `/posts/${activePost}` : `/posts/${activePost}`}
         >
         <Item 
         onClick={()=>{ 
           checkMyComment(item.userId) && 
-          dispatch(setToggleEditShow())
+          dispatch(addCommentShowToggle())
           dispatch(setReduxActiveComment(item.id))
           dispatch(setReduxActiveCommentItem(item))
         }}

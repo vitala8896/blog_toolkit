@@ -15,12 +15,12 @@ export const postSlice = createSlice({
       activeAnnouncementItem: {},
       addAnnouncementShow: false
     },
-    comments: {
-      editShow: false,
+    comments: {      
       comments: [], 
       list: [],
       activeComment: 0,
-      activeCommentItem: {}
+      activeCommentItem: {},
+      addCommentShow: false,
     }, 
     pagination: {
       posts: {
@@ -108,10 +108,17 @@ export const postSlice = createSlice({
     addPostShowToggle: state => {
       state.posts.addPostShow = !state.posts.addPostShow
       state.announcements.addAnnouncementShow = false
+      state.comments.addCommentShow = false
     },
     addAnnouncementShowToggle: state => {
       state.announcements.addAnnouncementShow = !state.announcements.addAnnouncementShow
       state.posts.addPostShow = false
+      state.comments.addCommentShow = false
+    },
+    addCommentShowToggle: state => {
+      state.comments.addCommentShow = !state.comments.addCommentShow
+      state.posts.addPostShow = false
+      state.announcements.addAnnouncementShow = false
     },
   },
 })
@@ -135,7 +142,8 @@ export const {
   setReduxPageCountPosts, setReduxPageCountAnnouncements, setReduxPageNumPosts, 
   setReduxPageNumAnnouncements,
   addPostShowToggle,
-  addAnnouncementShowToggle  
+  addAnnouncementShowToggle,
+  addCommentShowToggle  
 } = postSlice.actions
 
 export default postSlice.reducer
