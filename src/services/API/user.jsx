@@ -9,3 +9,8 @@ export const getUser = async id => {
     logout() 
   } 
 }
+export const chechOnAuth = () => {
+  if(localStorage.getItem('user')) {     
+    getUser(JSON.parse(localStorage.getItem('user')).id)
+  }
+}

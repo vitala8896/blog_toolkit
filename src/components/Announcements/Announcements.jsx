@@ -100,6 +100,7 @@ const Item = styled.div`
   width: 48%;
   padding: 0 10px 10px;
   margin-top: 15px;
+  word-wrap: break-word;
   overflow: hidden;  
   border-radius: 3px;
   border: 1px solid rgb(219, 219, 219);

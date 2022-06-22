@@ -61,6 +61,9 @@ export const postSlice = createSlice({
       state.comments.list = event.payload
       state.loading = false 
     },
+    resetReduxComments: (state, event) => {
+      state.comments.comments = []
+    },
     setReduxActivePost: (state, event) => {
       state.posts.activePost = event.payload
     },  
@@ -146,6 +149,7 @@ export const {
   setReduxPostsList, 
   setReduxAnnouncementsList, 
   setReduxCommentsList,
+  resetReduxComments,
   setReduxActivePost, 
   setReduxActivePostItem, 
   setReduxAnnouncements, 

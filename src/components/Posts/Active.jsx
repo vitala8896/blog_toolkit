@@ -1,20 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from 'react-router-dom'
 import Comments from '../Comments/Comments'
-import { setReduxActivePost, setReduxPageNumPosts, addEditPostShowToggle } from '../../store/postSlice'
+import { setReduxActivePost, setReduxPageNumPosts, addEditPostShowToggle, fetchStart, resetReduxComments } from '../../store/postSlice'
 import { getActivePost } from './../../services/API/post'
-import { finishDeletePost } from './../../services/API/create'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { EditComment } from '../Comments/Edit'
 import { Edit } from './Edit'
+import TextareaAutosize from 'react-textarea-autosize'
+import { Loader } from './../UI/Loader/Loader'
+
 
 const ActivePost = () => {
   const dispatch = useDispatch()
   let history = useHistory()
-  const { activePost, activePostItem, pageNum, pageSize, createPost, addCommentShow, addEditShow } =
+  const { loading, activePost, activePostItem, pageNum, pageSize, createPost, addCommentShow, addEditShow } =
   useSelector(state => ({
+    loading: state.post.loading,
     activePost: state.post.posts.activePost,
     activePostItem: state.post.posts.activePostItem,
     pageNum: state.post.pagination.posts.pageNum,
@@ -23,7 +26,7 @@ const ActivePost = () => {
     addCommentShow: state.post.comments.addCommentShow,
     addEditShow: state.post.posts.addEditShow
   }))
-  useEffect( () => {   
+  useEffect( () => {  
     const setURL = () => {
       let numURL = +history.location.pathname.replace('/posts/', '')
       dispatch(setReduxActivePost(numURL))
@@ -47,6 +50,7 @@ const ActivePost = () => {
           <Header>
             <StyledNavLink to={'/'} onClick={() => {
               dispatch(setReduxPageNumPosts(1))
+              dispatch(resetReduxComments())
             }}>
               <Name> {activePostItem.user.firstname} {activePostItem.user.lastname}</Name>
             </StyledNavLink>
@@ -57,17 +61,19 @@ const ActivePost = () => {
             }
           </Header>
           <Title>{activePostItem.title}</Title>
-          <Body>{activePostItem.body}</Body>
+          <Body value={activePostItem.body}/>
         </Container>
-      ) 
-      
+      )       
     }    
   }
+  useEffect( () => { 
+    render()
+  }, [activePost])
   return (
     <Active>
       {addCommentShow && <EditComment/>}
       {addEditShow && <Edit/>}
-      {render()}
+      {loading ? <Loader /> : render()}
       <Comments />
     </Active>
   )
@@ -84,22 +90,6 @@ const Active = styled.div`
   color: #fff; 
   cursor: pointer;
 `;
-const Title = styled.h1`
- font-size: 20px;
-  display: flex;
-  justify-content: space-between;
-`;
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const Body = styled.p`
-  margin: 0;
-`;
-const Dell = styled.p`
-  display: flex;
-  justify-content: flex-end;
-`;
 const Container = styled.div`
   width: 70%;
   height: auto;
@@ -110,6 +100,21 @@ const Container = styled.div`
   @media (max-width: 1250px){
     width: 95%
   }
+`;
+const Title = styled.h1`
+ font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+`;
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const Body = styled(TextareaAutosize)`
+  background: linear-gradient(90deg, #5041b2 0%, #7969e6 100%);
+  width: 100%; 
+  height: auto; 
+  resize: none;
 `;
 const Name = styled.p`
   color: white;

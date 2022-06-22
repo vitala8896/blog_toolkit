@@ -3,32 +3,30 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import person from './../../Assets/Images/person.svg'
 import { Loader } from '../UI/Loader/Loader'
-import { setReduxPostsList, setReduxActivePost, fetchStart, addEditPostShowToggle } from '../../store/postSlice'
+import { setReduxPostsList, setReduxActivePost, fetchStart } from '../../store/postSlice'
 import { getReduxPosts } from './../../services/API/post'
-import { getUser } from './../../services/API/user'
+// import { getUser } from './../../services/API/user'
 import styled from 'styled-components'
 import { CreatePost } from './Create'
 
 
 const Posts = () => {
   const dispatch = useDispatch()
-  const { posts, list, loading, pageNum, pageSize } = useSelector(state => ({
-    list: state.post.pagination.posts.list,
+  const { loading, posts, list, pageNum, pageSize } = useSelector(state => ({
     loading: state.post.loading,
+    posts: state.post.posts.posts,
+    list: state.post.pagination.posts.list,    
     pageNum: state.post.pagination.posts.pageNum,
-    pageSize: state.post.pagination.posts.pageSize,
-    posts: state.post.posts.posts
+    pageSize: state.post.pagination.posts.pageSize
   }))
-  useEffect( () => { 
-    dispatch(fetchStart())  
+  useEffect( () => {    
     dispatch(getReduxPosts(pageNum, pageSize))
-  }, [pageNum])  
-  
+  }, [dispatch, pageNum, pageSize])  
   useEffect(() => {        
     if (posts?.length) {
-      if(localStorage.getItem('user')) {     
-        getUser(JSON.parse(localStorage.getItem('user')).id)
-      }
+      // if(localStorage.getItem('user')) {     
+      //   getUser(JSON.parse(localStorage.getItem('user')).id)
+      // }
       const list = posts.map(item => {
         return {
           id: item.id,
@@ -42,7 +40,7 @@ const Posts = () => {
       })
       dispatch(setReduxPostsList(list))
     }
-  }, [posts])
+  }, [dispatch, posts])
  
   const renderList = () => {     
     return list.map(item => {
@@ -126,8 +124,8 @@ const Item = styled.div`
   width: 48%;
   height: 220px;
   padding: 5px 15px 10px;
-  margin-top: 15px;
-  overflow: hidden;  
+  margin-top: 15px;   
+  word-wrap: break-word;
   border-radius: 3px;
   border: 1px solid rgb(233, 233, 233);
   cursor: pointer;

@@ -6,11 +6,13 @@ import CommentCreator from './Creator'
 import styled from 'styled-components'
 import { getReduxComments } from './../../services/API/post'
 import { setReduxCommentsList, setToggleEditShow, setReduxActiveComment, setReduxActiveCommentItem, addCommentShowToggle } from '../../store/postSlice'
+import { Loader } from './../UI/Loader/Loader';
 
 
 const Comments = () => {
   const dispatch = useDispatch()
-  const { list, comments, activePost, activeCommentItem } = useSelector(state => ({
+  const { loading, list, comments, activePost, activeCommentItem } = useSelector(state => ({
+    loading: state.post.loading,
     list: state.post.comments.list,
     comments: state.post.comments.comments,
     editShow: state.post.comments.editShow,
@@ -19,36 +21,31 @@ const Comments = () => {
   }))
   useEffect( () => {
     dispatch(getReduxComments(activePost)) 
-  }, [activePost])
-  useEffect(() => {
-    if (comments?.length) {
+  }, [dispatch, activePost])
+  useEffect(() => { 
       const list = comments.map(item => {
-        return {
-          id: item.id,
-          postId: item.postId,
-          userId: item.userId,
-          user: item.user,
-          body: item.body,
-          create: new Date(item.createdAt).toLocaleDateString()
-        }
-      })
-      dispatch(setReduxCommentsList(list))
-    }      
-  }, [comments])  
+          return {
+            id: item.id,
+            postId: item.postId,
+            userId: item.userId,
+            user: item.user,
+            body: item.body,
+            create: new Date(item.createdAt).toLocaleDateString()
+          }
+        })
+      dispatch(setReduxCommentsList(list))   
+  }, [activePost, comments])  
   const checkMyComment = id => {
     if(localStorage.getItem('user')){
       return id === JSON.parse(localStorage.getItem('user')).id
     }else{
       return false
     }     
-  }
+  }  
   const renderActiveComments = () => { 
     return list.map((item, key) => {
       return (
-        <StyledNavLink key={key}
-            to={checkMyComment(item.userId) ? `/posts/${activePost}` : `/posts/${activePost}`}
-        >
-        <Item 
+        <Item  key={key}
         onClick={()=>{ 
           checkMyComment(item.userId) && 
           dispatch(addCommentShowToggle())
@@ -63,13 +60,12 @@ const Comments = () => {
             {item.user.firstname} {item.user.lastname} - {item.body} 
           </div>                  
         </Item>
-        </StyledNavLink>
       )
     })
   } 
   return (
-    <StyleComments>      
-      <CommentCreator />
+    <StyleComments>   
+      { !loading && <CommentCreator />}
       {renderActiveComments()}
     </StyleComments>
   )
@@ -99,13 +95,4 @@ const Avatar = styled.img`
   width: 40px;
   height: auto;
   border-radius: 50%;
-`;
-const Dell = styled.span`
-  display: none; 
-  border-radius: 50%;
-  transition: all 3.3s ease-in;
-  margin-left: 10px;  
-`;
-const StyledNavLink = styled(NavLink)`
-  text-decoration: none;
 `;

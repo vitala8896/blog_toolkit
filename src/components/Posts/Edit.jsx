@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from 'styled-components'
 import { createPost } from "../../store/createSlice"
 import TextareaAutosize from 'react-textarea-autosize'
-import { addPostShowToggle, addEditPostShowToggle } from "../../store/postSlice"
+import { addEditPostShowToggle } from "../../store/postSlice"
 import close from "./../../Assets/Images/close.jpg"
 import { finishUpdatePost, finishDeletePost } from './../../services/API/create'
 

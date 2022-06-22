@@ -7,6 +7,8 @@ import { NavLink } from 'react-router-dom'
 import { getActiveAnnouncement } from './../../services/API/post'
 import { finishDeleteAnnouncement } from './../../services/API/create'
 import { EditAnnouncement } from './Edit'
+import TextareaAutosize from 'react-textarea-autosize'
+
 
 const ActiveAnnouncement = () => {
   const dispatch = useDispatch()
@@ -57,7 +59,7 @@ const ActiveAnnouncement = () => {
             }
           </Header>
           <H1>{activeAnnouncementItem.title}</H1>
-          <Body>{activeAnnouncementItem.body}</Body>
+          <Body value={activeAnnouncementItem.body}/>
         </Container>
       ) 
     }    
@@ -118,8 +120,11 @@ const Name = styled.p`
     color: rgb(167, 167, 167);
   }
 `;
-const Body = styled.p`
-  margin: 0;
+const Body = styled(TextareaAutosize)`
+  background: linear-gradient(90deg, #5041b2 0%, #7969e6 100%);
+  width: 100%; 
+  height: auto; 
+  resize: none;
 `;
 const Dell = styled.p`
   display: flex;

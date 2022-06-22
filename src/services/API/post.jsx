@@ -1,11 +1,11 @@
 import axios from './../axios'
-import { setReduxPosts, setReduxActivePost, setReduxActivePostItem, setReduxAnnouncements, setReduxActiveAnnouncement, setReduxActiveAnnouncementItem, setReduxComments, setReduxPageCountAnnouncements } from '../../store/postSlice'
+import { setReduxPosts, setReduxActivePost, setReduxActivePostItem, setReduxAnnouncements, setReduxActiveAnnouncement, setReduxActiveAnnouncementItem, setReduxComments, setReduxPageCountAnnouncements, fetchStart } from '../../store/postSlice'
 import { setReduxPageCountPosts } from '../../store/postSlice'
 
 
 export const getReduxPosts = (pageNum=1, pageSize=20) => {  
   return async dispatch => {
-    try {
+    try {      
       await axios.get(`/posts?_sort=createdAt&_order=desc&_expand=user&_page=${pageNum}&_limit=${pageSize}`)
       .then(response => {
         dispatch(setReduxPosts(response.data))
@@ -48,6 +48,7 @@ export const getReduxComments = activePost => {
 export const getActivePost = thisURL => {   
   return async dispatch => {
     try {
+      dispatch(fetchStart())
       await axios.get(`/posts/${thisURL}?_expand=user`).then(response => {
         dispatch(setReduxActivePost(response.data.id))
         dispatch(setReduxActivePostItem(response.data))
