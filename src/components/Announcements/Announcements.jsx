@@ -42,7 +42,7 @@ const Announcements = () => {
     return list.map((item, key) => {
       return (
         <Item key={key}>
-          <StyledNavLink to={'/announcements/' + item.id} onClick={() => {
+          <StyledNavLink to={`/announcements/${item.id}`} onClick={() => {
             dispatch(setReduxActiveAnnouncement(item.id))
           }}>
             <ItemHeader>

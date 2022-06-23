@@ -8,6 +8,8 @@ import { getReduxPosts } from './../../services/API/post'
 // import { getUser } from './../../services/API/user'
 import styled from 'styled-components'
 import { CreatePost } from './Create'
+import { LoginForm } from '../../Pages/Auth/Login'
+import { RegisterForm } from '../../Pages/Auth/Register'
 
 
 const Posts = () => {
@@ -19,7 +21,8 @@ const Posts = () => {
     pageNum: state.post.pagination.posts.pageNum,
     pageSize: state.post.pagination.posts.pageSize
   }))
-  useEffect( () => {    
+  useEffect( () => { 
+    dispatch(fetchStart())   
     dispatch(getReduxPosts(pageNum, pageSize))
   }, [dispatch, pageNum, pageSize])  
   useEffect(() => {        
@@ -47,7 +50,7 @@ const Posts = () => {
       return (
         <Item key={item.id}>
           <StyledNavLink
-            to={'/posts/' + item.id}
+            to={`/posts/${item.id}`}
             onClick={() => {
               dispatch(setReduxActivePost(item.id))
             }}            
@@ -76,7 +79,7 @@ const Posts = () => {
     <div>     
       <List>
         <StyleTitle>Posts</StyleTitle>
-        <CreatePost/>        
+        <LoginForm/><RegisterForm/><CreatePost/> 
         <Container>
           {loading ? <Loader /> : renderList()}          
         </Container>
@@ -126,6 +129,7 @@ const Item = styled.div`
   padding: 5px 15px 10px;
   margin-top: 15px;   
   word-wrap: break-word;
+  overflow: hidden;
   border-radius: 3px;
   border: 1px solid rgb(233, 233, 233);
   cursor: pointer;

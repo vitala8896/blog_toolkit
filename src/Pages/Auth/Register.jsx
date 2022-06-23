@@ -1,14 +1,18 @@
-import * as React from "react"
 import { useHistory } from 'react-router-dom'
 import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from 'styled-components'
-import { registerUser } from '../../store/authSlice'
+import { registerUser, showPopUpLoginToggle, showPopUpRegisterToggle } from '../../store/authSlice'
+import close from "./../../Assets/Images/close.jpg"
+
 
 
 const RegisterForm = () => {
   const dispatch = useDispatch()
   let history = useHistory()
+  const { showPopUpRegister } = useSelector(state => ({
+    showPopUpRegister: state.auth.showPopUpRegister
+  }))
   const { register, handleSubmit, formState: { errors },
   } = useForm({
     defaultValues: {
@@ -19,17 +23,17 @@ const RegisterForm = () => {
       avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9BgREGwGBtdG9th6TjSLJu4PA7FaRkqfI2A&usqp=CAU'
     }
   })
-  const changeToLogin = () => {
-    return history.push('/auth/login') 
-  }
   return (
-    <StyleForm>
+    <StyleForm className="slide-in-top" style={ showPopUpRegister? {display: 'flex'}:{display: 'none'}}>
       <Form onSubmit={handleSubmit(data => {
         dispatch(registerUser({...data}))
-        history.push('/')
+        dispatch(showPopUpRegisterToggle())
       })
       }>
-        <Title>Register</Title>
+        <Header>
+          <Title>Register</Title>
+          <Close src={close} onClick={()=>dispatch(showPopUpRegisterToggle()) }/> 
+        </Header>        
         <Input type="text" {...register("firstname", {required: true, minLength: 3})} placeholder="Enter firstname name"/>
         {errors?.firstname && "min length: 3"}
         <Input type="text" {...register("lastname", {required: true, minLength: 3})} placeholder="Enter lastname name"/>
@@ -43,7 +47,7 @@ const RegisterForm = () => {
         <Input type="url" {...register("avatar", {required: true, minLength: 2})} placeholder="Please enter your image."/>
         {errors?.avatar && "min length: 2"}        
         <Button type="submit">Submit</Button>
-        <GoTo onClick={changeToLogin}>go to login</GoTo>        
+        <GoTo onClick={()=>{dispatch(showPopUpLoginToggle())}}>go to login</GoTo>        
       </Form>
     </StyleForm>
   )
@@ -52,11 +56,43 @@ const RegisterForm = () => {
 export { RegisterForm }
 
 const StyleForm = styled.div`
-  display: flex;
+  position: fixed;
+  top: 0;
+  display: none;
   align-items: center;
   justify-content: center; 
+  width: 100%;
   height: 100vh;
-  background: linear-gradient(#141e30, #243b55);  
+  z-index: 10;
+  background: rgba(0%, 53%, 87%, .18);  
+  &.slide-in-top {
+    -webkit-animation: slide-in-top 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: slide-in-top 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }   
+  @-webkit-keyframes slide-in-top {
+    0% {
+      -webkit-transform: translateY(-1000px);
+              transform: translateY(-1000px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slide-in-top {
+    0% {
+      -webkit-transform: translateY(-1000px);
+              transform: translateY(-1000px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+    }
+  } 
 `
 const Form = styled.form`
   background-color: #15172b;
@@ -68,6 +104,15 @@ const Form = styled.form`
   & {
     color: red;
   }
+`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const Close = styled.img`
+  width: 25px;
+  height: 25px;
+  cursor: pointer
 `
 const Title = styled.p`
   color: #eee;

@@ -8,8 +8,8 @@ export const loginUser = async (email, password) => {
 		let url = '/login'
 		const response = await axios.post(url, authData)		
 		return response.data
-	} catch (error) {
-		throw error.response.data
+	} catch (error) {	
+		throw error.response
 	}
 }
 export const logout = () => {

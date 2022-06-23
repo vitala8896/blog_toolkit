@@ -129,8 +129,7 @@ const Title = styled.div`
   color: #eee;
   font-family: sans-serif;
   font-size: 36px;
-  font-weight: 600; 
-  
+  font-weight: 600;
 `
 const Close = styled.img`
   width: 25px;

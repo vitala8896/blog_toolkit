@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from 'react-router-dom'
 import Comments from '../Comments/Comments'
-import { setReduxActivePost, setReduxPageNumPosts, addEditPostShowToggle, fetchStart, resetReduxComments } from '../../store/postSlice'
+import { setReduxActivePost, setReduxPageNumPosts, addEditPostShowToggle, resetReduxComments } from '../../store/postSlice'
 import { getActivePost } from './../../services/API/post'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'

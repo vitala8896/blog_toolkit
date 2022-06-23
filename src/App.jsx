@@ -6,8 +6,6 @@ import ActivePost from './components/Posts/Active'
 import ActiveAnnouncement from './components/Announcements/Active'
 import HomeAnnouncements from './Pages/Home/HomeAnnouncements'
 import Logout from './components/Logout/Logout'
-import { LoginForm } from './Pages/Auth/Login'
-import { RegisterForm } from './Pages/Auth/Register'
 
 
 const App = () => {
@@ -15,9 +13,7 @@ const App = () => {
 		<div className='App'>	
 			<Layout>
 				<Header/>
-				<Switch>
-					<Route path='/auth/register' component={RegisterForm}/>:
-					<Route path='/auth/login' component={LoginForm}/>
+				<Switch>					
 					<Route path="/posts/:postId" component={ActivePost} />
 					<Route path="/announcements/:announcementId" component={ActiveAnnouncement} />
 					<Route path="/announcements" component={HomeAnnouncements} />

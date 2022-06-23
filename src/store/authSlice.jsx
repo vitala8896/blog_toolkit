@@ -13,8 +13,18 @@ export const authSlice = createSlice({
 		idLoading: false,
 		isAuthenticated: !!getToken()?.length,
 		user: getLocalUser(),
+		showPopUpLogin: false,
+		showPopUpRegister: false,
 	},
 	reducers: {
+		showPopUpLoginToggle: state => {
+			state.showPopUpLogin = !state.showPopUpLogin
+			state.showPopUpRegister = false
+		},
+		showPopUpRegisterToggle: state => {
+			state.showPopUpRegister = !state.showPopUpRegister
+			state.showPopUpLogin = false
+    },
 		authLogout: state => {
 			state.accessToken = null
 			state.isAuthenticated = false
@@ -93,6 +103,6 @@ export const registerUser = createAsyncThunk('auth/register', async (data, api) 
 	return response
 })
 
-export const { authLogout } = authSlice.actions
+export const { showPopUpLoginToggle, showPopUpRegisterToggle, authLogout } = authSlice.actions
 
 export default authSlice.reducer

@@ -1,23 +1,20 @@
 import { useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import person from './../../Assets/Images/person.svg'
 import CommentCreator from './Creator'
 import styled from 'styled-components'
 import { getReduxComments } from './../../services/API/post'
-import { setReduxCommentsList, setToggleEditShow, setReduxActiveComment, setReduxActiveCommentItem, addCommentShowToggle } from '../../store/postSlice'
-import { Loader } from './../UI/Loader/Loader';
+import { setReduxCommentsList, setReduxActiveComment, setReduxActiveCommentItem, addCommentShowToggle } from '../../store/postSlice'
 
 
 const Comments = () => {
   const dispatch = useDispatch()
-  const { loading, list, comments, activePost, activeCommentItem } = useSelector(state => ({
+  const { loading, list, comments, activePost } = useSelector(state => ({
     loading: state.post.loading,
     list: state.post.comments.list,
     comments: state.post.comments.comments,
     editShow: state.post.comments.editShow,
-    activePost: state.post.posts.activePost,
-    activeCommentItem: state.post.comments.activeCommentItem
+    activePost: state.post.posts.activePost
   }))
   useEffect( () => {
     dispatch(getReduxComments(activePost)) 

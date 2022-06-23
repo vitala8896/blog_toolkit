@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Backdrop } from '../../components/UI/Backdrop/Backdrop'
 import { addPostShowToggle, addAnnouncementShowToggle } from '../../store/postSlice'
+import { showPopUpLoginToggle } from '../../store/authSlice'
 
 
 
@@ -17,6 +18,8 @@ const Drawer = props => {
     dispatch(addPostShowToggle())
     link === 'Create a announcement' && 
     dispatch(addAnnouncementShowToggle())
+    link === 'Authorization' && 
+    dispatch(showPopUpLoginToggle())    
   }  
   const renderLinks = links => {
     return links.map((link, index) => {
@@ -48,15 +51,8 @@ const Drawer = props => {
       { to: '/', label: 'Create a post', exact: false },
       { to: '/announcements', label: 'Create a announcement', exact: true },
       { to: '/logout', label: 'Exit', exact: false })
-  } else { 
-    let checkAuth = () => {
-      if(localStorage.getItem('user')){
-        return 'login'
-      }else{
-        return 'register'
-      }
-    }   
-    links.push({ to: `/auth/${checkAuth()}`, label: 'Authorization', exact: false })
+  } else {       
+    links.push({ to: '/', label: 'Authorization', exact: false })
   }
   return (
     <>  

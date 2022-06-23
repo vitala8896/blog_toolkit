@@ -87,7 +87,7 @@ const Form = styled.form`
   border-radius: 20px;
   box-sizing: border-box;
   height: auto;
-  width: 50%;
+  width: 70%;
   padding: 20px;
   & {
     color: red;
