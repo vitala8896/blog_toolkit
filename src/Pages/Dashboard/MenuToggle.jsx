@@ -30,7 +30,11 @@ const Menu = styled.div`
       left: 80px;
   }
   @media (max-width: 450px){
+      top: 25px;
       left: 50px;
       font-size: 20px;
   } 
+  @media (max-width: 320px){
+    left: 20px;
+  }
 `;

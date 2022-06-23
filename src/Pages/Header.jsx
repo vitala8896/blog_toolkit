@@ -23,10 +23,10 @@ const Header = () => {
         <StyledNavLink to='/'><Logo src={logo}  alt="logo" onClick={ goToStartPage } />
         </StyledNavLink>
         <Menu>
-          <StyledNavLink to='/' onClick={ goToStartPage }
-          >Posts</StyledNavLink>          
-          <StyledNavLink to='/announcements'
-          >Announcements</StyledNavLink>          
+          <SNavLink to='/' onClick={ goToStartPage }
+          >Posts</SNavLink>          
+          <SNavLink to='/announcements'
+          >Announcements</SNavLink>          
         </Menu>
         {accessToken &&
           <StyledNavLink to='/'><Avatar src={avatar} alt="logo" onClick={() => {dispatch(addUserShowToggle())}} />
@@ -43,7 +43,7 @@ const StyleHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;  
-  background: #313131;
+  background: linear-gradient(90deg, #111 0%, #7969e6 180%);
   width: 100%;
   height: 67px;
   z-index: 10;
@@ -59,9 +59,12 @@ const Container = styled.div`
 `;
 const Logo = styled.img`
   height: 70px;
-  z-index: 100 !important;
+  z-index: 100;
   @media (max-width: 450px){
     height: 50px;
+  }
+  @media (max-width: 320px){
+    display: none;
   }
 `;
 const Avatar = styled.img`
@@ -70,13 +73,59 @@ const Avatar = styled.img`
   @media (max-width: 450px){
     width: 50px;
   }
+  @media (max-width: 320px){
+    width: 30px;
+  }
 `;
 const Menu = styled.ul`
   display: flex;
   @media (max-width: 450px){
     :nth-child(1){
       margin-right: 8px;
-    }
+  }
+`;
+const SNavLink = styled(NavLink)`
+  background-image: linear-gradient(
+    to right,
+    #54b3d6,
+    #54b3d6 50%,
+    #2884f6 0%
+  );
+  background-size: 200% 100%;
+  background-position: -100%;
+  display: inline-block;
+  padding: 0 15px;
+  position: relative;
+  font-size: 22px;
+  font-weight: bold;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease-in-out;
+  :before{
+    content: '';
+    background: #54b3d6;
+    display: block;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    transition: all 0.3s ease-in-out;
+  };
+  :hover {
+    background-position: 0;
+    opacity: .7;
+  };
+  :hover::before{
+    width: 100%;
+  }
+  &.active {
+    opacity: 1;
+  }  
+  @media (max-width: 450px){
+    font-size: 18px;
+    padding: 0 5px;
+  }
 `;
 const StyledNavLink = styled(NavLink)`
   font-size: 22px;

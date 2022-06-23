@@ -111,6 +111,9 @@ const Icon = styled.span`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  padding: 10px 15px 0;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #000 0%, #7969e6 100%);
 `;
 const Name = styled.p`
   color: white;
@@ -125,10 +128,6 @@ const Body = styled(TextareaAutosize)`
   width: 100%; 
   height: auto; 
   resize: none;
-`;
-const Dell = styled.p`
-  display: flex;
-  justify-content: flex-end;
 `;
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;

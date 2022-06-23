@@ -101,14 +101,17 @@ const Container = styled.div`
     width: 95%
   }
 `;
-const Title = styled.h1`
- font-size: 20px;
+const Title = styled.h1`  
   display: flex;
   justify-content: space-between;
+  padding: 10px 15px ;
+  font-size: 20px;
 `;
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  padding: 10px 15px 0;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #000 0%, #7969e6 100%);
 `;
 const Body = styled(TextareaAutosize)`
   background: linear-gradient(90deg, #5041b2 0%, #7969e6 100%);
