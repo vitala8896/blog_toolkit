@@ -110,7 +110,6 @@ const Icon = styled.span`
 `;
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   padding: 10px 15px 0;
   border-radius: 5px;
   background: linear-gradient(90deg, #000 0%, #7969e6 100%);
